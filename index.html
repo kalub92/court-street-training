@@ -905,9 +905,10 @@
       transform: translateX(0);
     }
 
-    /* Sidebar inner — let sidebar handle scrolling, don't clip */
+    /* Sidebar inner — let sidebar handle scrolling, don't clip.
+       Top padding clears the 58px fixed top bar so the first nav group isn't hidden behind it. */
     .sidebar-inner {
-      padding: 24px 22px 32px;
+      padding: 78px 22px 32px;
     }
 
     /* Top bar already shows the title — hide the duplicate header in the drawer */
