@@ -876,7 +876,9 @@
 
   /* ──── RESPONSIVE: MOBILE (900px) ──── */
   @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
+    /* z-index: auto removes the stacking context so the sidebar (z-index:99)
+       can sit above the drawer backdrop (z-index:98) in the root stacking order. */
+    .layout { grid-template-columns: 1fr; z-index: auto; }
 
     /* Show mobile top bar, hide desktop sidebar by default */
     .mobile-topbar { display: flex; }
@@ -3041,6 +3043,9 @@ No "partner with us," no "journey." Pastor writing to a congregation.</div>
     function openDrawer() {
       sidebar.classList.add('open');
       backdrop.classList.add('visible');
+      requestAnimationFrame(function () {
+        backdrop.classList.add('open');
+      });
       toggle.setAttribute('aria-expanded', 'true');
       lockBodyScroll();
     }
