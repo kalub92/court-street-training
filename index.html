@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Ministry · A Court Street Training Curriculum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #1a2740;
+    --navy-2:    #243350;
+    --navy-deep: #0f1a2e;
+    --gold:      #c8861a;
+    --gold-lt:   #e8a535;
+    --gold-pale: #f4d88a;
+    --cream:     #faf6ef;
+    --cream-2:   #f3ece0;
+    --sand:      #e8dcc8;
+    --sand-2:    #d8c8a8;
+    --green:     #1e6244;
+    --green-lt:  #4a9b75;
+    --red:       #8b1a1a;
+    --red-lt:    #c23838;
+    --ink:       #1c1a24;
+    --ink-soft:  #3a3542;
+    --muted:     #726b7d;
+    --paper:     #fdfaf3;
+    --line:      rgba(26,39,64,.15);
+    --line-2:    rgba(26,39,64,.08);
+    --shadow:    0 4px 20px rgba(26,39,64,.08);
+    --shadow-lg: 0 18px 48px rgba(26,39,64,.14);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* Paper grain texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .7;
+  }
+
+  /* ──── LAYOUT ──── */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ──── SIDEBAR ──── */
+  aside.sidebar {
+    position: sticky; top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--navy);
+    color: var(--cream);
+    border-right: 1px solid var(--navy-deep);
+  }
+  .sidebar-inner {
+    height: 100%;
+    overflow-y: auto;
+    padding: 32px 24px;
+  }
+  aside.sidebar::-webkit-scrollbar { width: 6px; }
+  aside.sidebar::-webkit-scrollbar-track { background: transparent; }
+  aside.sidebar::-webkit-scrollbar-thumb { background: rgba(250,246,239,.15); border-radius: 3px; }
+
+  .sb-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    color: var(--gold-pale);
+    margin-bottom: 4px;
+  }
+  .sb-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(250,246,239,.12);
+  }
+
+  .sb-group {
+    margin-bottom: 28px;
+  }
+  .sb-group-label {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-left: 8px;
+  }
+  .sb-nav {
+    list-style: none;
+  }
+  .sb-nav a {
+    display: block;
+    padding: 7px 10px;
+    color: rgba(250,246,239,.78);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: all .2s ease;
+  }
+  .sb-nav a:hover {
+    background: rgba(250,246,239,.06);
+    color: var(--cream);
+    border-left-color: var(--gold);
+  }
+  .sb-nav a.active {
+    background: rgba(200,134,26,.15);
+    color: var(--gold-pale);
+    border-left-color: var(--gold);
+  }
+  .sb-footer {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(250,246,239,.1);
+    font-size: 11.5px;
+    color: rgba(250,246,239,.5);
+    line-height: 1.5;
+  }
+
+  /* ──── MAIN CONTENT ──── */
+  main {
+    max-width: 820px;
+    padding: 72px 80px 120px;
+    background: transparent;
+  }
+
+  /* ──── HERO ──── */
+  .hero {
+    margin-bottom: 96px;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 28px; height: 1.5px;
+    background: var(--gold);
+  }
+
+  h1.hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 400;
+    line-height: 1.02;
+    color: var(--navy-deep);
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .hero-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 620px;
+    margin-bottom: 44px;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px;
+    padding: 24px 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero-meta-value {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  /* ──── SECTIONS ──── */
+  section.module {
+    margin-bottom: 96px;
+    scroll-margin-top: 20px;
+  }
+
+  .module-ribbon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .module-ribbon .dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .module-ribbon .time {
+    color: var(--muted);
+    font-size: 10.5px;
+    margin-left: auto;
+    letter-spacing: 0.1em;
+  }
+
+  h2.module-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--navy-deep);
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+  h2.module-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .module-intro {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h3.section-h {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--navy-deep);
+    margin: 44px 0 18px;
+    letter-spacing: -0.01em;
+  }
+
+  h4.section-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin: 32px 0 14px;
+  }
+
+  p {
+    margin-bottom: 18px;
+    color: var(--ink-soft);
+    line-height: 1.72;
+  }
+
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  em { font-style: italic; }
+
+  /* Default link style — warm gold-brown on light backgrounds */
+  a {
+    color: var(--gold);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color .15s ease;
+  }
+  a:hover { color: var(--gold-lt); }
+
+  /* Keep bold text readable on dark backgrounds */
+  .try-this strong,
+  .try-this p strong,
+  .try-this li strong,
+  aside.sidebar strong,
+  .mobile-topbar strong,
+  .prompt-header strong,
+  .callout-scripture strong {
+    color: var(--cream);
+  }
+
+  /* Links on dark-background surfaces use gold-pale for contrast */
+  .try-this a,
+  .try-this p a,
+  aside.sidebar a:not(.sb-nav a),
+  .mobile-topbar a,
+  .prompt-header a {
+    color: var(--gold-pale);
+    text-decoration-color: rgba(244, 216, 138, .5);
+  }
+  .try-this a:hover,
+  aside.sidebar a:not(.sb-nav a):hover,
+  .mobile-topbar a:hover,
+  .prompt-header a:hover {
+    color: var(--gold-lt);
+    text-decoration-color: var(--gold-lt);
+  }
+
+  ul.bullets, ol.numbered {
+    margin: 18px 0 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+  ul.bullets li, ol.numbered li {
+    position: relative;
+    padding: 8px 0 8px 30px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  ul.bullets li::before {
+    content: '';
+    position: absolute;
+    left: 4px; top: 18px;
+    width: 10px; height: 2px;
+    background: var(--gold);
+  }
+  ol.numbered {
+    counter-reset: li;
+  }
+  ol.numbered li {
+    counter-increment: li;
+    padding-left: 40px;
+  }
+  ol.numbered li::before {
+    content: counter(li, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  /* ──── CALLOUTS ──── */
+  .callout {
+    margin: 28px 0;
+    padding: 24px 28px;
+    border-left: 3px solid;
+    border-radius: 0 4px 4px 0;
+    background: var(--paper);
+    position: relative;
+  }
+  .callout-note { border-left-color: var(--navy); background: #f0ede4; }
+  .callout-warn { border-left-color: var(--red); background: #fbebeb; }
+  .callout-pro { border-left-color: var(--green); background: #e8f1eb; }
+  .callout-scripture {
+    border-left-color: var(--gold);
+    background: linear-gradient(180deg, #faf0d8 0%, #f8eecc 100%);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--navy);
+    padding: 28px 32px;
+  }
+  .callout-scripture cite {
+    display: block;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .callout-note .callout-label { color: var(--navy); }
+  .callout-warn .callout-label { color: var(--red); }
+  .callout-pro .callout-label { color: var(--green); }
+
+  /* ──── PROMPT BLOCKS ──── */
+  .prompt {
+    margin: 20px 0 32px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .prompt-header .tool-tag {
+    background: var(--gold);
+    color: var(--navy-deep);
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+  .prompt-header .tool-tag.cowork { background: var(--green-lt); color: #fff; }
+  .prompt-body {
+    padding: 22px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+    background: var(--paper);
+  }
+  .prompt-note {
+    padding: 12px 22px;
+    font-size: 13px;
+    color: var(--muted);
+    background: #fdfbf7;
+    border-top: 1px dashed var(--line-2);
+    font-style: italic;
+  }
+
+  /* ──── TRY-THIS BOX ──── */
+  .try-this {
+    margin: 36px 0;
+    padding: 28px 32px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .try-this::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle at top right, rgba(200,134,26,.22), transparent 70%);
+    pointer-events: none;
+  }
+  .try-this .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin-bottom: 10px;
+  }
+  .try-this h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 14px;
+    color: var(--cream);
+  }
+  .try-this p { color: rgba(250,246,239,.85); margin-bottom: 14px; }
+  .try-this p:last-child { margin-bottom: 0; }
+  .try-this ul.bullets li { color: rgba(250,246,239,.82); }
+  .try-this ul.bullets li::before { background: var(--gold-lt); }
+
+  /* ──── CHECK BOX ──── */
+  .checkpoint {
+    margin: 36px 0;
+    padding: 24px 28px;
+    border: 2px dashed var(--gold);
+    border-radius: 6px;
+    background: #fef9ea;
+  }
+  .checkpoint h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy-deep);
+    margin-bottom: 14px;
+  }
+  .checkpoint ul { list-style: none; }
+  .checkpoint li {
+    padding: 6px 0 6px 30px;
+    position: relative;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .checkpoint li::before {
+    content: '☐';
+    position: absolute;
+    left: 0; top: 4px;
+    font-size: 20px;
+    color: var(--gold);
+  }
+
+  /* ──── TABLES ──── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .compare-table th {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 18px;
+    text-align: left;
+  }
+  .compare-table td {
+    padding: 14px 18px;
+    border-top: 1px solid var(--line-2);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  /* ──── TRACK CARDS ──── */
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: 32px 0;
+  }
+  .track-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px 24px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid;
+    transition: transform .25s ease, box-shadow .25s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .track-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .track-card.pastoral { border-top-color: var(--navy); }
+  .track-card.comms    { border-top-color: var(--gold); }
+  .track-card.youth    { border-top-color: var(--green); }
+  .track-card.admin    { border-top-color: #5a4a7a; }
+  .track-card.steward  { border-top-color: var(--red-lt); }
+  .track-card .track-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .track-card.pastoral .track-letter { color: var(--navy); }
+  .track-card.comms .track-letter    { color: var(--gold); }
+  .track-card.youth .track-letter    { color: var(--green); }
+  .track-card.admin .track-letter    { color: #5a4a7a; }
+  .track-card.steward .track-letter  { color: var(--red-lt); }
+  .track-card h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--navy-deep);
+    margin-bottom: 6px;
+  }
+  .track-card p {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  /* ──── POLICY LIST ──── */
+  .policy-list {
+    list-style: none;
+    margin: 28px 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .policy-list li {
+    padding: 18px 22px 18px 58px;
+    border-top: 1px solid var(--line-2);
+    position: relative;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .policy-list li:first-child { border-top: 0; }
+  .policy-list li::before {
+    position: absolute;
+    left: 20px; top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .policy-list.never li { background: linear-gradient(90deg, #fdf2f2 0%, transparent 8%); }
+  .policy-list.never li::before { content: '✕'; color: var(--red); }
+  .policy-list.yes li { background: linear-gradient(90deg, #eef7f2 0%, transparent 8%); }
+  .policy-list.yes li::before { content: '✓'; color: var(--green); }
+
+  /* ──── FRAMEWORK DIAGRAM ──── */
+  .craft-framework {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 32px 0;
+  }
+  .craft-letter {
+    background: var(--cream-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 12px;
+    text-align: center;
+  }
+  .craft-letter .big {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .craft-letter .word {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .craft-letter .desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  /* ──── WHEN-TO-USE ──── */
+  .tool-choose {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 28px 0;
+  }
+  .tool-col {
+    padding: 24px 26px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .tool-col.claude { border-top: 4px solid var(--gold); }
+  .tool-col.cowork { border-top: 4px solid var(--green-lt); }
+  .tool-col h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .tool-col.claude h5 { color: var(--gold); }
+  .tool-col.cowork h5 { color: var(--green); }
+  .tool-col .sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .tool-col ul { list-style: none; }
+  .tool-col li {
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding-left: 22px;
+    position: relative;
+  }
+  .tool-col li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .tool-col.cowork li::before { color: var(--green-lt); }
+
+  /* ──── DIVIDER ──── */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 48px auto;
+    max-width: 200px;
+  }
+  .ornament::before, .ornament::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .ornament-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ──── FOOTER ──── */
+  footer {
+    max-width: 820px;
+    margin-top: 80px;
+    padding: 48px 80px 80px;
+    border-top: 1px solid var(--line);
+  }
+  footer .foot-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  footer p {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  /* ──── PRINT ──── */
+  @media print {
+    aside.sidebar, .mobile-topbar, .drawer-backdrop { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    main { max-width: 100%; padding: 20px 40px; }
+    .try-this, .checkpoint { break-inside: avoid; }
+    section.module { break-before: page; }
+  }
+
+  /* ──── MOBILE TOP BAR (hidden on desktop) ──── */
+  .mobile-topbar {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 58px;
+    background: var(--navy);
+    color: var(--cream);
+    z-index: 100;
+    align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(15,26,46,.22);
+  }
+  .mobile-topbar .hamburger {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(250,246,239,.22);
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .mobile-topbar .hamburger span {
+    display: block;
+    width: 18px; height: 1.5px;
+    background: var(--cream);
+    position: relative;
+  }
+  .mobile-topbar .hamburger span::before,
+  .mobile-topbar .hamburger span::after {
+    content: '';
+    position: absolute; left: 0;
+    width: 18px; height: 1.5px;
+    background: var(--cream);
+  }
+  .mobile-topbar .hamburger span::before { top: -6px; }
+  .mobile-topbar .hamburger span::after  { top: 6px; }
+
+  .mobile-topbar .tb-title {
+    font-family: 'Fraunces', serif;
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+  }
+  .mobile-topbar .tb-title .tb-sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .drawer-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15,26,46,.55);
+    z-index: 98;
+    opacity: 0;
+    transition: opacity .25s ease;
+    touch-action: none;
+  }
+  .drawer-backdrop.open { opacity: 1; }
+
+  /* ──── RESPONSIVE: TABLET (1100px) ──── */
+  @media (max-width: 1100px) {
+    main { padding: 60px 56px 100px; }
+    .layout { grid-template-columns: 240px 1fr; }
+    .sidebar-inner { padding: 28px 18px; }
+    .sb-title { font-size: 19px; }
+  }
+
+  /* ──── RESPONSIVE: MOBILE (900px) ──── */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+
+    /* Show mobile top bar, hide desktop sidebar by default */
+    .mobile-topbar { display: flex; }
+    .drawer-backdrop.visible { display: block; }
+
+    /* Sidebar becomes a drawer */
+    aside.sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 280px;
+      max-width: 84vw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 99;
+      transform: translateX(-100%);
+      transition: transform .28s cubic-bezier(.3,.7,.3,1);
+      padding: 0;
+      box-shadow: 4px 0 24px rgba(15,26,46,.32);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    aside.sidebar.open {
+      transform: translateX(0);
+    }
+
+    /* Sidebar inner — let sidebar handle scrolling, don't clip */
+    .sidebar-inner {
+      padding: 24px 22px 32px;
+    }
+
+    /* Pad main content for fixed top bar */
+    main {
+      max-width: 100%;
+      padding: 88px 28px 80px;
+    }
+
+    /* Hero */
+    .hero { margin-bottom: 64px; }
+    h1.hero-title { font-size: clamp(34px, 8vw, 48px); margin-bottom: 22px; }
+    .hero-lead { font-size: 18px; margin-bottom: 32px; }
+    .hero-meta {
+      flex-direction: column;
+      gap: 18px;
+      padding: 20px 22px;
+    }
+    .hero-meta-value { font-size: 18px; }
+
+    /* Sections */
+    section.module { margin-bottom: 68px; }
+    .module-intro { font-size: 16px; padding-bottom: 24px; margin-bottom: 30px; }
+    h2.module-title { font-size: clamp(28px, 6vw, 36px); }
+    h3.section-h { font-size: 22px; margin: 36px 0 14px; }
+    h4.section-sub { margin: 26px 0 12px; }
+
+    /* Grids stack */
+    .tool-choose { grid-template-columns: 1fr; gap: 14px; }
+    .tool-col { padding: 20px 22px; }
+    .tracks-grid { grid-template-columns: 1fr; gap: 14px; }
+    .track-card { padding: 22px 22px; }
+    .craft-framework {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin: 26px -6px;
+    }
+    .craft-letter { padding: 14px 6px; }
+    .craft-letter .big { font-size: 28px; }
+    .craft-letter .word { font-size: 9px; letter-spacing: 0.05em; }
+    .craft-letter .desc { display: none; }
+
+    /* Callouts */
+    .callout { padding: 20px 22px; margin: 22px 0; }
+    .callout-scripture { padding: 24px 24px; font-size: 16px; }
+
+    /* Prompt blocks */
+    .prompt { margin: 18px 0 26px; }
+    .prompt-header {
+      padding: 10px 14px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .prompt-header .tool-tag { font-size: 9.5px; padding: 3px 8px; }
+    .prompt-body {
+      padding: 18px 16px;
+      font-size: 12.5px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .prompt-note { padding: 10px 16px; font-size: 12.5px; }
+
+    /* Try-this */
+    .try-this { padding: 24px 22px; margin: 28px 0; }
+    .try-this h5 { font-size: 19px; }
+    .checkpoint { padding: 22px 22px; margin: 28px 0; }
+    .checkpoint h5 { font-size: 18px; }
+    .checkpoint li { font-size: 14.5px; }
+
+    /* Tables — scroll container */
+    .compare-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    .compare-table thead, .compare-table tbody,
+    .compare-table tr { display: table; width: 100%; table-layout: fixed; }
+    .compare-table th, .compare-table td {
+      padding: 12px 14px;
+      font-size: 13px;
+      white-space: normal;
+    }
+
+    /* Policy list */
+    .policy-list li {
+      padding: 16px 18px 16px 48px;
+      font-size: 14.5px;
+    }
+    .policy-list li::before { left: 16px; font-size: 16px; }
+
+    /* Lists */
+    ul.bullets li, ol.numbered li { font-size: 15px; }
+
+    /* Footer */
+    footer {
+      padding: 36px 28px 56px;
+      margin-top: 60px;
+    }
+  }
+
+  /* ──── RESPONSIVE: SMALL PHONE (560px) ──── */
+  @media (max-width: 560px) {
+    main { padding: 80px 20px 64px; }
+
+    h1.hero-title { font-size: clamp(30px, 9vw, 40px); }
+    .hero-eyebrow { font-size: 10.5px; gap: 10px; }
+    .hero-eyebrow::before { width: 20px; }
+    .hero-lead { font-size: 17px; line-height: 1.4; }
+
+    .module-ribbon { flex-wrap: wrap; font-size: 10px; }
+    .module-ribbon .time { margin-left: 0; width: 100%; margin-top: 4px; }
+
+    /* CRAFT collapses to 2 cols so each letter has breathing room */
+    .craft-framework { grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 24px 0; }
+    .craft-letter { padding: 16px 10px; }
+    .craft-letter .big { font-size: 32px; }
+    .craft-letter .word { font-size: 10.5px; letter-spacing: 0.08em; }
+    .craft-letter .desc { display: block; font-size: 10.5px; }
+
+    .prompt-body { font-size: 12px; padding: 16px 14px; }
+
+    footer .foot-title { font-size: 20px; }
+    footer p { font-size: 13px; }
+
+    /* Ornament divider */
+    .ornament { margin: 36px auto; }
+  }
+
+</style>
+</head>
+<body>
+<!-- Mobile top bar — hidden on desktop via CSS -->
+<div class="mobile-topbar">
+  <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+  </button>
+  <div class="tb-title">
+    AI for Ministry
+    <span class="tb-sub">Court Street · Training</span>
+  </div>
+</div>
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+<div class="layout">
+
+<!-- ════════════════════════════════════════
+     SIDEBAR
+     ════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-inner">
+    <div class="sb-brand">Court Street Christian Church</div>
+    <div class="sb-title">AI for Ministry<br>Training Curriculum</div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Begin Here</div>
+      <ul class="sb-nav">
+        <li><a href="#welcome">Welcome</a></li>
+        <li><a href="#how-to-use">How to Use This Course</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Core Modules · Everyone</div>
+      <ul class="sb-nav">
+        <li><a href="#m1">1. Foundations</a></li>
+        <li><a href="#m2">2. Our AI Policy</a></li>
+        <li><a href="#m3">3. Prompting Basics</a></li>
+        <li><a href="#m4">4. Claude Desktop 101</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Role Tracks · Pick Yours</div>
+      <ul class="sb-nav">
+        <li><a href="#track-a">Track A · Pastoral &amp; Teaching</a></li>
+        <li><a href="#track-b">Track B · Communications</a></li>
+        <li><a href="#track-c">Track C · Children &amp; Youth</a></li>
+        <li><a href="#track-d">Track D · Administration</a></li>
+        <li><a href="#track-e">Track E · Stewardship &amp; Outreach</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Advanced</div>
+      <ul class="sb-nav">
+        <li><a href="#m10">5. Claude Projects</a></li>
+        <li><a href="#m11">6. Your Practicum</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Appendix</div>
+      <ul class="sb-nav">
+        <li><a href="#dispatch">A &middot; Dispatch &middot; Mobile</a></li>
+        <li><a href="#scheduled">B &middot; Scheduled Tasks</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-group">
+      <div class="sb-group-label">Reference</div>
+      <ul class="sb-nav">
+        <li><a href="#prompts">Prompt Library</a></li>
+        <li><a href="#glossary">Glossary</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#resources">Further Resources</a></li>
+      </ul>
+    </div>
+
+    <div class="sb-footer">
+      <em style="color:var(--gold-pale);">Loving God. Loving Neighbor. Together.</em><br><br>
+      Prepared for Court Street staff · 2026
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════════════════════════════
+     MAIN CONTENT
+     ════════════════════════════════════════ -->
+<main>
+
+<!-- HERO -->
+<section class="hero" id="welcome">
+  <div class="hero-eyebrow">Staff Training · Spring 2026</div>
+  <h1 class="hero-title">AI <em>for</em> Ministry</h1>
+  <p class="hero-lead">A practical, self-paced training curriculum for Court Street staff — learning to use Claude as a tool that frees us to do the ministry only people can do.</p>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Format</span>
+      <span class="hero-meta-value">Self-paced · 6 hrs total</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Audience</span>
+      <span class="hero-meta-value">All Court Street staff</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Tools Covered</span>
+      <span class="hero-meta-value">Claude Desktop · Chat &amp; Cowork</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO USE -->
+<section class="module" id="how-to-use">
+  <div class="module-ribbon"><span class="dot"></span>Orientation <span class="time">~ 10 minutes</span></div>
+  <h2 class="module-title">How <em>to use</em> this course</h2>
+  <p class="module-intro">Before we start, a quick word on how this is organized and what kind of commitment it's going to ask of you. The short version: this is designed to respect your time.</p>
+
+  <p>This training takes about <strong>six hours total</strong>, spread over roughly three weeks of your normal work rhythm. You don't do it in one sitting. You don't need to block a whole day. The material is broken into modules so you can do a piece on Tuesday morning before staff meeting, another piece on Thursday afternoon, and so on.</p>
+
+  <p>The structure goes like this:</p>
+
+  <ol class="numbered">
+    <li><strong>Core modules (everyone completes).</strong> Four modules that every staff member goes through — foundations, our AI policy, prompting basics, and a first hands-on tour of Claude Desktop including Chat, Cowork, and the Microsoft 365 connector. About 2.5 hours.</li>
+    <li><strong>One role track (pick yours).</strong> Five tracks — Pastoral &amp; Teaching, Communications, Children &amp; Youth, Administration, Stewardship &amp; Outreach. You complete the one that matches your role. About 1.5 hours. If you wear multiple hats, pick the one you spend the most time in and skim the others.</li>
+    <li><strong>Advanced modules (optional but encouraged).</strong> How to build a Claude Project for your ministry area, and a practicum where you apply Claude to a real task and report back at staff meeting. About 2 hours.</li>
+    <li><strong>Reference appendix.</strong> A prompt library you'll use long after the course ends. You'll come back to this weekly for the first few months — and that's the point.</li>
+  </ol>
+
+  <div class="callout callout-note">
+    <span class="callout-label">A note on pace</span>
+    <p style="margin:0;">If something clicks and you want to keep going, keep going. If something feels heavy, stop and come back tomorrow. The goal isn't to finish — the goal is to leave this course actually using these tools well in your ministry. A rushed completion doesn't serve anyone.</p>
+  </div>
+
+  <h4 class="section-sub">What you'll need</h4>
+  <ul class="bullets">
+    <li>A Court Street Claude account — ask the administrator if you don't have one yet.</li>
+    <li>A Microsoft 365 account on our Court Street tenant (the same account you use for Outlook and SharePoint).</li>
+    <li>A Windows or Mac computer. Some exercises are hard on a phone — and the Cowork surface is desktop-only.</li>
+    <li>A real ministry task to practice on. Not a fake scenario. Bring your actual work to the training.</li>
+    <li>A willingness to try things, see them fail, and try again. That's how fluency happens.</li>
+  </ul>
+
+  <h4 class="section-sub">What completion looks like</h4>
+  <p>At the end, you'll have signed the Court Street AI Usage Policy, completed your role track's exercises, built at least one reusable prompt for your ministry area, and presented a "time saved" story at a staff meeting. That's the shape of done.</p>
+
+  <div class="ornament"><span class="ornament-mark">❦</span></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 1 · FOUNDATIONS
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m1">
+  <div class="module-ribbon"><span class="dot"></span>Core Module 1 of 4 <span class="time">~ 30 minutes</span></div>
+  <h2 class="module-title">Foundations <em>—</em> Why We're Doing This</h2>
+  <p class="module-intro">Before a single prompt, before a single login, we need to name why Court Street is bringing these tools in at all. Because the "why" shapes the "how" — and if we get the why wrong, we'll use these tools badly no matter how clever the techniques are.</p>
+
+  <h3 class="section-h">Why AI, and why now</h3>
+
+  <p>Most of our staff spend a meaningful portion of each week on work that isn't ministry — it's the <em>scaffolding</em> around ministry. Drafting the newsletter. Summarizing the board packet. Turning sermon notes into small group questions. Writing the thank-you letter to the new donor. Compiling the volunteer schedule. Formatting the bulletin.</p>
+
+  <p>None of that work is bad. Much of it is essential. But almost none of it is the reason you came to Court Street. You came here to shepherd people, to teach, to reach the community, to steward what God has entrusted — and the scaffolding eats the hours that should go to the shepherding.</p>
+
+  <p>AI tools, used well, shift that ratio. They don't replace ministry. They compress scaffolding. A newsletter that took two hours takes forty minutes. A study guide draft that took a Saturday morning takes fifteen minutes of review. The five hours a week that come back are ministry hours.</p>
+
+  <div class="callout callout-scripture">
+    "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters."
+    <cite>Colossians 3:23</cite>
+  </div>
+
+  <p>The question isn't whether AI is going to be part of the work of churches — it already is, at the churches around us, in the lives of our members, in the culture. The question is whether we use it thoughtfully and on our terms, or whether it gets used on us.</p>
+
+  <h3 class="section-h">What AI actually is (and isn't)</h3>
+
+  <p>Language models like Claude are very good at a specific thing: predicting what words come next, given the words so far. That sounds reductive, but it's the honest description. They're trained on vast amounts of text and have become remarkably skilled at producing plausible, helpful, often insightful text in response to what you type.</p>
+
+  <p>What this means practically:</p>
+
+  <ul class="bullets">
+    <li><strong>They are genuinely useful</strong> for drafting, summarizing, explaining, brainstorming, translating, comparing, reorganizing, and many other text-based tasks that fill a staff member's week.</li>
+    <li><strong>They sometimes make things up</strong> — the industry calls this "hallucination." They can generate a confident-sounding Bible reference that doesn't exist, or a historical fact that's wrong. This isn't rare. This is a feature of how they work, and it's the single most important thing to remember.</li>
+    <li><strong>They have no beliefs</strong>, no faith, no pastoral heart, no memory of our congregation, no awareness of Mrs. Henderson's recent loss or the specific way a particular family has been faithful for thirty years. Everything like that comes from you.</li>
+    <li><strong>They are not counselors, pastors, or priests</strong>. They do not replace pastoral care, spiritual direction, or the work of the Spirit. They handle text.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">A core habit to form now</span>
+    <p style="margin:0;">Every AI output gets reviewed by a human before it goes anywhere. Every sermon reference verified. Every donor letter personalized. Every scripture citation checked. Treat AI output as a <em>draft from a smart intern who's never met our people</em> — useful, often excellent, but never the final word.</p>
+  </div>
+
+  <h3 class="section-h">Our tool: Claude Desktop, two surfaces</h3>
+
+  <p>Court Street has chosen Claude as our AI platform. We use it through the <strong>Claude Desktop app</strong> — a free application you'll install on your work computer — rather than the website. Desktop gives you faster access, works with your local files, and includes a feature called Cowork that the web version doesn't.</p>
+
+  <p>Inside Claude Desktop, you'll use two different surfaces depending on the task. They sit side-by-side as tabs at the top of the window (a third tab, <em>Code</em>, is for developers — ignore it). Most of your work will be in Chat. Some of it will move to Cowork when you want Claude to actually produce files or work across several of them at once.</p>
+
+  <div class="tool-choose">
+    <div class="tool-col claude">
+      <h5>Claude Chat</h5>
+      <div class="sub">The conversation surface · Primary</div>
+      <ul>
+        <li>Drafting text that a person will read — newsletters, letters, study guides, bulletins</li>
+        <li>Thinking through problems, outlining a sermon, brainstorming a response</li>
+        <li>Uploading one or two documents and asking questions about them</li>
+        <li>Summarizing long documents &mdash; theology books, policies, reports</li>
+        <li>Quick, back-and-forth work — your default for most things</li>
+        <li>Shared team context through <strong>Projects</strong></li>
+      </ul>
+    </div>
+    <div class="tool-col cowork">
+      <h5>Claude Cowork</h5>
+      <div class="sub">The agent surface · For delegated work</div>
+      <ul>
+        <li>Producing actual files — Word docs, Excel spreadsheets, PowerPoints, PDFs saved to your computer</li>
+        <li>Working across a whole folder of files at once</li>
+        <li>Multi-step tasks you want to delegate and walk away from</li>
+        <li>Converting a messy batch of documents into something clean and consistent</li>
+        <li>Scheduled recurring work — weekly digests, monthly reports</li>
+        <li>When Chat's "here's a draft, copy-paste it" pattern is getting in the way</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>A simple rule of thumb:</strong> if the task ends with <em>"and then I read it and decide what to do,"</em> open Chat. If the task ends with <em>"and then a finished file gets saved where I need it,"</em> open Cowork. Module 4 walks through installing the app and using both surfaces.</p>
+
+  <p>Both surfaces connect to our <strong>Microsoft 365</strong> — Outlook, OneDrive, SharePoint, Teams — through a feature called the M365 connector. Once it's set up, you can ask Claude things like <em>"summarize the email thread about the building repair"</em> or <em>"find last year's picnic bulletin in SharePoint"</em> without having to download and re-upload anything. We'll set that up in Module 4 as well.</p>
+
+  <h3 class="section-h">A theological word before we go further</h3>
+
+  <p>We are a church. It would be dishonest to pretend that using AI tools is spiritually neutral, that it raises no questions worth thinking about. It does. Let's name a few, briefly, and say where we land.</p>
+
+  <p><em>Does using AI to draft ministry content make it less authentic?</em> No more than using a word processor, a concordance, a commentary, or a sermon illustration book made ministry less authentic. Every pastor in history has drawn from tools and other voices; what matters is that the final work is shaped by your discernment, your voice, your care for the people you serve. AI doesn't change that equation — it just changes the tool.</p>
+
+  <p><em>Is it honest to use AI-assisted writing?</em> In most cases, yes, same as with any editing or co-writing. Where it would matter — a personal letter to a grieving family, a pastoral counseling note, a message where the recipient has a right to your unmediated voice — don't use AI, or use it only as a brainstorming partner and write the piece yourself. Use judgment.</p>
+
+  <p><em>Does AI threaten our call?</em> Only if we let it. The work only people can do — being present in a hospital room, praying with someone in crisis, knowing a child's name, discerning what God is doing in a family's life, carrying the weight of a community — cannot be done by a machine. If AI frees us from drudgery to do more of <em>that</em> work, it serves the call. If we use it lazily, it erodes us. That's on us.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">The posture we're taking</span>
+    <p style="margin:0;">AI is a tool, like a typewriter or a photocopier or a study Bible was in its day. It does not pray. It does not love its neighbor. It cannot shepherd a flock. Our calling doesn't change. What changes is that the paperwork that used to steal hours from the calling starts giving those hours back.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Before moving on, check yourself</h5>
+    <ul>
+      <li>I can name in one sentence why Court Street is adopting these tools.</li>
+      <li>I understand that AI can produce confident-sounding text that is simply wrong, and that I must verify.</li>
+      <li>I know the rough split: Chat for drafting things I'll review, Cowork for tasks that end with a finished file.</li>
+      <li>I'm comfortable that this is a tool, not a replacement for what only people can do.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 2 · AI POLICY
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m2">
+  <div class="module-ribbon"><span class="dot"></span>Core Module 2 of 4 <span class="time">~ 25 minutes</span></div>
+  <h2 class="module-title">Our <em>AI</em> Usage Policy</h2>
+  <p class="module-intro">Every Court Street staff member signs this policy before using Claude for church work. It's short on purpose. The heart of it is two lists: things we never do, and things we always do.</p>
+
+  <h3 class="section-h">The Never list</h3>
+  <p>These are absolute. If a situation pushes against any of these, stop, close the Claude window, and either handle the task without AI or talk to a pastor or admin about what approach is appropriate.</p>
+
+  <ul class="policy-list never">
+    <li><strong>Never paste counseling notes, mental-health conversations, or pastoral crisis content into Claude.</strong> These contain the deepest trust a person places in the church. They do not go into any external tool, ever, under any circumstance. This applies in <em>both</em> Chat and Cowork.</li>
+    <li><strong>Never paste a child's full name, photo, or identifying details combined with church affiliation.</strong> Children's ministry work uses first names only, or generic descriptions, in any AI prompt. Photos do not go in.</li>
+    <li><strong>Never paste identifiable giving records, donor names tied to amounts, or individual financial data.</strong> Aggregate and anonymized data is fine. Named individual donor data stays in our approved financial systems.</li>
+    <li><strong>Never paste Social Security numbers, full birthdates, home addresses of minors, login credentials, or any similar high-sensitivity personal data.</strong> If you'd be uncomfortable with it on a postcard, it doesn't go in AI.</li>
+    <li><strong>Never publish AI-generated content as the Pastor's own words</strong> (or any staff member's) without their review and explicit approval.</li>
+    <li><strong>Never rely on AI for doctrinal or scriptural accuracy without verification.</strong> Claude generates plausible-sounding theology that is sometimes wrong. Scripture references get checked against an actual Bible. Doctrinal statements get reviewed by a pastor.</li>
+    <li><strong>Never use AI to respond to a person in crisis.</strong> Crisis calls, mental health emergencies, pastoral emergencies — these are never handled through AI-assisted responses. A human being, present and aware, responds.</li>
+  </ul>
+
+  <h3 class="section-h">The Always list</h3>
+
+  <ul class="policy-list yes">
+    <li><strong>Always review before you send, post, or publish.</strong> Read every AI output as if it came from an intern who's never met our people. Fix, personalize, verify.</li>
+    <li><strong>Always verify scripture and facts.</strong> Any Bible reference gets checked. Any historical claim gets sanity-checked. Any statistic gets a source.</li>
+    <li><strong>Always sign in with your Court Street Claude account.</strong> Use the account set up for you by the administrator, not a personal account. This keeps church work inside our organization's settings and audit trail.</li>
+    <li><strong>Always use generic references for sensitive scenarios.</strong> Instead of "write a note for Jane Smith whose husband just died of cancer," write "help me draft a condolence letter for a longtime member whose spouse recently passed." The specific name and details go in at the end, in your own hand.</li>
+    <li><strong>Always assume the conversation could be read aloud in a staff meeting.</strong> If that's uncomfortable, rework the prompt.</li>
+    <li><strong>Always ask if you're not sure.</strong> The admin and the pastor can help think through whether a specific use is appropriate. It's better to ask than to guess.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">A specific note about Cowork</span>
+    <p style="margin:0 0 10px;">Cowork stores its conversation history <em>locally on your work computer</em> rather than in Claude's cloud. That's actually more private in one sense — it stays on your machine — but it also means Cowork conversations are <strong>not captured in our organization's audit logs</strong>. For the church, this has two practical consequences:</p>
+    <ul class="bullets" style="margin-bottom:0;">
+      <li>Cowork is fine for ordinary ministry work — drafting, file organization, producing documents from non-sensitive sources.</li>
+      <li>For anything touching the Never list — and especially anything pastoral or financial — use Chat, not Cowork. Chat conversations are visible to the administrator if there's ever a reason to review them; Cowork sessions are not.</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-label">Signing the policy</span>
+    <p style="margin:0;">Before using Claude for Court Street work, sign the one-page AI Usage Policy (on file with the church administrator). This is a one-time thing and takes thirty seconds. It isn't a legal formality — it's a shared statement that we've all read the Never list and agree to work within it.</p>
+  </div>
+
+  <h3 class="section-h">What to do if something goes wrong</h3>
+
+  <p>If you accidentally paste sensitive content into Claude, don't panic — but don't hide it either. Contact the church administrator the same day. We'll walk through what was pasted, take any cleanup steps available (deleting the conversation, clearing local Cowork history, etc.), and document what happened. The reason we handle this openly is that quiet mistakes compound. Early transparency keeps everyone safer.</p>
+
+  <div class="checkpoint">
+    <h5>Before moving on</h5>
+    <ul>
+      <li>I've read both lists carefully and understand why each item is on it.</li>
+      <li>I've signed the one-page policy with the admin.</li>
+      <li>I know who to contact (the administrator) if I'm uncertain whether a use is appropriate.</li>
+      <li>I understand that errors get reported openly, not hidden.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 3 · PROMPTING BASICS
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m3">
+  <div class="module-ribbon"><span class="dot"></span>Core Module 3 of 4 <span class="time">~ 40 minutes</span></div>
+  <h2 class="module-title">Prompting <em>Basics</em></h2>
+  <p class="module-intro">A prompt is simply what you type to the AI. Getting good output is about writing good prompts — and that skill is learnable in an afternoon. This module gives you a simple framework and shows you, with real examples, how a mediocre prompt becomes a great one.</p>
+
+  <h3 class="section-h">The C·R·A·F·T framework</h3>
+  <p>When a prompt feels like it's getting mediocre output, it's almost always because one of these five pieces is missing. Run through them as a mental checklist.</p>
+
+  <div class="craft-framework">
+    <div class="craft-letter">
+      <div class="big">C</div>
+      <div class="word">Context</div>
+      <div class="desc">The background the model needs to do the job</div>
+    </div>
+    <div class="craft-letter">
+      <div class="big">R</div>
+      <div class="word">Role</div>
+      <div class="desc">Who the AI is acting as</div>
+    </div>
+    <div class="craft-letter">
+      <div class="big">A</div>
+      <div class="word">Audience</div>
+      <div class="desc">Who the output is for</div>
+    </div>
+    <div class="craft-letter">
+      <div class="big">F</div>
+      <div class="word">Format</div>
+      <div class="desc">Shape of the output</div>
+    </div>
+    <div class="craft-letter">
+      <div class="big">T</div>
+      <div class="word">Tone</div>
+      <div class="desc">The feel of the writing</div>
+    </div>
+  </div>
+
+  <p>Watch what happens when we stack these.</p>
+
+  <h4 class="section-sub">A bad prompt</h4>
+  <div class="prompt">
+    <div class="prompt-header"><span>Example · Weak</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Write a newsletter for church.</div>
+    <div class="prompt-note">Output will be generic, flavorless, and unusable. The model has no idea what church, what audience, what tone, what length, or what content to include.</div>
+  </div>
+
+  <h4 class="section-sub">A better prompt</h4>
+  <div class="prompt">
+    <div class="prompt-header"><span>Example · Better</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Write a short weekly newsletter for Court Street Christian Church in Salem, Oregon. Highlight Sunday service, the upcoming church picnic on March 22, and this week's volunteer opportunity (greeting team needs two people).</div>
+    <div class="prompt-note">Usable. Output will be on-topic. But still somewhat generic in voice, and you'll likely get more polish by pushing further.</div>
+  </div>
+
+  <h4 class="section-sub">A great prompt</h4>
+  <div class="prompt">
+    <div class="prompt-header"><span>Example · Strong</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">You are a communications writer helping Court Street Christian Church, a warm, scripture-grounded congregation in Salem, Oregon. Our tagline is "Loving God. Loving Neighbor. Together."
+
+Draft this week's midweek email newsletter, about 250 words, for our regular members (mostly 35–70 years old, many with families). Warm, conversational tone — like a friend writing an update. Use second person. Include:
+
+• A brief opener tied to this Sunday's sermon theme (forgiveness, Matthew 18)
+• A highlight of the March 22 all-church picnic at Bush Pasture Park (12 PM, potluck, RSVP in the app)
+• A short invitation for two volunteers on the greeting team this Sunday
+• A closing line of encouragement
+
+Break into short paragraphs. End with "See you Sunday," — Pastor [Name]. Don't invent scripture quotes I didn't give you; if you reference Matthew 18, reference it briefly and accurately.</div>
+    <div class="prompt-note">All five CRAFT elements are present. The output will be 90% of the way to ready-to-send. You'll spend five minutes editing instead of forty minutes writing.</div>
+  </div>
+
+  <h3 class="section-h">The four habits of good prompters</h3>
+
+  <ol class="numbered">
+    <li><strong>Be specific about who the AI is and who it's writing for.</strong> "You are helping a children's ministry director write a note to parents of K–2 kids" produces radically different output than "write a note."</li>
+    <li><strong>Give examples whenever possible.</strong> If you have a newsletter you liked, paste it in and say "match this voice." If you have a condolence letter you've sent before, paste it in and say "new letter, same spirit." Models learn your style from samples much faster than from descriptions.</li>
+    <li><strong>Iterate — don't settle for the first draft.</strong> The first output is a starting point. Say "make it warmer," "shorter," "remove the second paragraph," "add a reference to Psalm 23," "rewrite for a teenager." Keep going until it's right. This is the skill.</li>
+    <li><strong>Tell it what not to do, not just what to do.</strong> "Don't use the word 'journey,'" "no hashtags," "don't invent scripture references," "don't be saccharine." Negative instructions prevent the AI clichés you want to avoid.</li>
+  </ol>
+
+  <div class="try-this">
+    <div class="label">Try This · 10 minutes</div>
+    <h5>Rewrite a prompt, three times</h5>
+    <p>Open Claude. Pick a real task from your inbox this week — something you'd normally write from scratch. Try a bad prompt, a better prompt, and a great prompt using CRAFT. Keep the conversations. Notice the difference.</p>
+    <p>Bonus: take your "great" version and iterate three more times until the output is ready to send. Count how long it took compared to writing from scratch.</p>
+  </div>
+
+  <h3 class="section-h">Verifying output — the three checks</h3>
+
+  <p>Before anything the AI produced leaves your screen for the congregation, run three checks. Make this a reflex, like looking both ways at a crosswalk.</p>
+
+  <ol class="numbered">
+    <li><strong>The accuracy check.</strong> Is every scripture reference real? Is every fact right? Is every name spelled correctly? Are any claims about history, doctrine, or statistics actually true?</li>
+    <li><strong>The voice check.</strong> Does this sound like Court Street? Does it sound like you? Not like an AI wrote it? If it has a vaguely corporate, "journey together" quality, rework it.</li>
+    <li><strong>The pastoral check.</strong> Is this the right thing to say to this audience, at this moment, given what I know about our people? Would I be comfortable with our most thoughtful member reading this?</li>
+  </ol>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">Watch out for: Confident-sounding nonsense</span>
+    <p style="margin:0;">The single failure mode you will hit most often is a beautifully written output that contains a fabricated Bible reference, a wrong date, or an invented quote attributed to a theologian. AI writes these confidently. They look right. Always verify specifics.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Before moving on</h5>
+    <ul>
+      <li>I can name the five letters of CRAFT and what each one means.</li>
+      <li>I've rewritten a real prompt three times and seen the difference in output.</li>
+      <li>I have the three-check reflex: accuracy, voice, pastoral.</li>
+      <li>I know iterating in conversation is where real quality comes from.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 4 · CLAUDE DESKTOP 101
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m4">
+  <div class="module-ribbon"><span class="dot"></span>Core Module 4 of 4 <span class="time">~ 60 minutes</span></div>
+  <h2 class="module-title">Claude Desktop <em>101</em></h2>
+  <p class="module-intro">This module is hands-on. You'll install the Claude Desktop app, sign in, connect it to Microsoft 365, and try a small task in both Chat and Cowork. Don't skip the exercises — fluency comes from doing, not reading. Plan on about an hour, though most of that time is the install and M365 admin consent.</p>
+
+  <h3 class="section-h">Step 1 — Install the Claude Desktop app</h3>
+  <p>We use the desktop app, not the website. It's faster, it works with your local files, and it includes the Cowork surface that the web version doesn't. Installation takes about three minutes.</p>
+
+  <ol class="numbered">
+    <li>Go to <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a> in your browser.</li>
+    <li>Click the download button for your computer (Windows or Mac — the site auto-detects).</li>
+    <li>Open the installer when it finishes downloading. On Windows that's a <code>.msix</code> file; on Mac it's a <code>.pkg</code>. Follow the prompts — there's nothing unusual to click through.</li>
+    <li>Launch Claude from your Start menu (Windows) or Applications folder (Mac). You can pin it to your taskbar or dock.</li>
+    <li>Sign in with the Claude account the administrator set up for you. If you don't have one yet, ask the admin before going further — don't create a personal account for church work.</li>
+  </ol>
+
+  <div class="callout callout-note">
+    <span class="callout-label">If you get stuck</span>
+    <p style="margin:0;">The official install guide is at <a href="https://support.claude.com/en/articles/10065433-install-claude-desktop" target="_blank" rel="noopener">support.claude.com</a>. If Windows flags the installer as unfamiliar, that's normal — click "More info" and "Run anyway." If you run into anything beyond that, ping the administrator rather than fighting it for thirty minutes.</p>
+  </div>
+
+  <h3 class="section-h">Step 2 — The three tabs you'll see</h3>
+  <p>When Claude Desktop opens, you'll see three tabs at the top of the window: <strong>Chat</strong>, <strong>Cowork</strong>, and <strong>Code</strong>. Here's what each one does and which ones you'll use.</p>
+
+  <ul class="bullets">
+    <li><strong>Chat</strong> is the conversation surface. It looks and works like the Claude website — you type, Claude answers, you keep going. This is where most of your work will happen.</li>
+    <li><strong>Cowork</strong> is the agent surface. Instead of chatting, you point Claude at a folder on your computer and give it a task to complete. Claude works through the task on its own and saves finished files where you told it to. We'll cover this in Step 5.</li>
+    <li><strong>Code</strong> is for software developers. Ignore it. It's not for church work, and clicking it by accident does nothing harmful.</li>
+  </ul>
+
+  <h3 class="section-h">Step 3 — Connect Microsoft 365</h3>
+  <p>The M365 connector lets Claude read (not modify) your Outlook email, OneDrive and SharePoint documents, Teams conversations, and calendar. That means instead of downloading a document from SharePoint and uploading it to Claude, you can just ask Claude to find and summarize it directly. Same with email threads and meeting notes.</p>
+
+  <p>The connector is <em>read-only</em> and <em>respects your existing Microsoft 365 permissions</em> — Claude can't see anything in Microsoft 365 that you couldn't already see yourself. It uses your login, not a separate set of keys. The <a href="https://support.claude.com/en/articles/12684923-microsoft-365-connector-security-guide" target="_blank" rel="noopener">security guide</a> has the details if you're curious.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">One-time admin step</span>
+    <p style="margin:0;">Before any individual staff member can connect, a Microsoft 365 Global Administrator at Court Street has to grant tenant-wide consent. The administrator handles this. If you try to connect before that's done, you'll get an authentication error — that just means the admin step is still pending, not that you did anything wrong.</p>
+  </div>
+
+  <p><strong>Once the admin has granted consent</strong>, here's how to connect your own account:</p>
+
+  <ol class="numbered">
+    <li>In Claude Desktop, click your profile icon in the bottom-left corner, then choose <strong>Settings</strong>.</li>
+    <li>Go to <strong>Connectors</strong> (on some versions it's under <em>Customize &rarr; Connectors</em>).</li>
+    <li>Find <strong>Microsoft 365</strong> in the list and click <strong>Connect</strong>.</li>
+    <li>A Microsoft sign-in window opens. Sign in with your Court Street Microsoft 365 account (not a personal @outlook.com — those don't work).</li>
+    <li>Review the permissions Claude is asking for (read access to SharePoint, OneDrive, Outlook, Teams) and accept.</li>
+    <li>You'll bounce back to Claude Desktop with the connector marked <strong>Connected</strong>. That's it.</li>
+  </ol>
+
+  <p>The full official walkthrough is at <a href="https://support.claude.com/en/articles/12542951-enable-and-use-the-microsoft-365-connector" target="_blank" rel="noopener">Enable and use the Microsoft 365 connector</a>.</p>
+
+  <h3 class="section-h">Step 4 — Using Chat</h3>
+
+  <h4 class="section-sub">The conversation itself</h4>
+  <p>Click the Chat tab. You're looking at a message box. Type, press enter, Claude answers. Keep the conversation going — don't start a new chat every time you want to refine something. Claude remembers everything in the current conversation and uses that context.</p>
+
+  <h4 class="section-sub">File uploads</h4>
+  <p>Click the paperclip. Upload a PDF, Word doc, Excel sheet, text file, or image. Claude reads the entire thing (even full books) and can answer questions, summarize, pull out sections, rewrite, or compare against another document. This is one of Chat's biggest strengths.</p>
+
+  <h4 class="section-sub">The Microsoft 365 connector in action</h4>
+  <p>With the connector on, you can skip the upload step for anything that's already in Microsoft 365. Just ask: <em>"Find the 2024 building maintenance report in our SharePoint and summarize it."</em> Or: <em>"Summarize the email thread with the Salem community garden about Saturday's work day."</em> Claude will pull the document or thread and work with it directly. You'll see a small indicator telling you which files or messages it looked at.</p>
+
+  <h4 class="section-sub">Projects</h4>
+  <p>A Project is a persistent workspace where Claude remembers things across many conversations. You upload reference documents once (style guide, doctrinal statement, past sermons, newsletter archive), and every conversation inside that Project automatically has that context. Module 5 walks through setting up the five Court Street Projects.</p>
+
+  <h4 class="section-sub">Artifacts (creating files)</h4>
+  <p>Ask Claude to <em>"create this as a Word document I can download"</em> or <em>"make this a printable PDF"</em> and it will produce a downloadable file right in the chat. For emails, bulletins, study guides, and proposals — you can skip the copy-paste-into-Word step entirely.</p>
+
+  <div class="try-this">
+    <div class="label">Try This · 15 minutes · Chat</div>
+    <h5>Three small tasks, three Chat features</h5>
+    <p style="margin-bottom:16px;">In Claude Desktop, click the Chat tab. Do all three of these as one continuous conversation to build muscle memory.</p>
+    <ul class="bullets">
+      <li><strong>Task 1 — Pure chat.</strong> Type: <em>"I'm a staff member at Court Street Christian Church, a congregation in Salem, Oregon. Help me brainstorm five creative, scripture-grounded ideas for our Easter breakfast theme this year."</em> Then keep refining: <em>"The first idea feels too cheesy — try three different ones,"</em> and so on.</li>
+      <li><strong>Task 2 — M365 connector.</strong> Ask: <em>"Search our SharePoint for anything related to last year's Easter breakfast and summarize what we did."</em> (If the connector hasn't been set up yet, use file upload instead — upload any recent bulletin and ask for a summary.)</li>
+      <li><strong>Task 3 — Artifact.</strong> Ask Claude to <em>"create a one-page volunteer signup sheet for the Easter breakfast I can print, as a PDF."</em> You'll get a downloadable file. Save it.</li>
+    </ul>
+  </div>
+
+  <h3 class="section-h">Step 5 — Using Cowork</h3>
+
+  <p>Cowork is a different way of working with Claude. Instead of a conversation where you copy output out, Cowork is a <em>worker</em>: you hand it a task, it works through the steps on its own, and you come back to a finished file. Under the hood it has the same brain as Chat, but it can read and write files on your computer, run multi-step tasks autonomously, and produce real Word documents, Excel spreadsheets, PDFs, and PowerPoint decks saved directly to a folder you chose.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">Why Cowork is worth learning</span>
+    <p style="margin:0;">Chat is brilliant for anything that ends with <em>"and now I'll read and edit this draft."</em> Cowork is brilliant for anything that ends with <em>"and now three finished files are sitting in the right folder."</em> A staff member learning both has roughly twice as many workflows available as someone using only Chat.</p>
+  </div>
+
+  <h4 class="section-sub">Opening Cowork for the first time</h4>
+  <ol class="numbered">
+    <li>Click the <strong>Cowork</strong> tab at the top of Claude Desktop.</li>
+    <li>At the bottom of the screen you'll see a message box and a <strong>Work in a Folder</strong> checkbox. Click it and choose a folder on your computer. Start with something non-sensitive — a folder of old bulletins, an empty folder you'll use for practice — not your whole Documents drive.</li>
+    <li>Type a task. <em>"In this folder, there are three old bulletins as PDFs. Read them, identify the three most common announcement types, and create a Word document template for a weekly bulletin based on that pattern. Save it in this folder."</em></li>
+    <li>Hit send and walk away. Claude narrates what it's doing as it works. When it's done, the file is in the folder.</li>
+  </ol>
+
+  <h4 class="section-sub">What Cowork is good at</h4>
+  <ul class="bullets">
+    <li><strong>Producing finished files</strong> — Excel spreadsheets with working formulas, formatted Word documents, PowerPoint decks, filled-in PDFs.</li>
+    <li><strong>Working across many files at once</strong> — "read all twelve of these meeting minutes from the last year, extract every action item, and produce a single consolidated spreadsheet."</li>
+    <li><strong>Organizing and reorganizing</strong> — "sort this folder of photos by year based on the dates in the filenames and move them into subfolders."</li>
+    <li><strong>Recurring scheduled work</strong> — set Cowork to run a task weekly or monthly (more on this once you're comfortable with the basics).</li>
+  </ul>
+
+  <h4 class="section-sub">What Cowork is NOT for, at Court Street</h4>
+  <ul class="bullets">
+    <li>Anything on the Never list. Pastoral, counseling, child-safety, or donor-specific content.</li>
+    <li>Work that someone else on staff needs to see the conversation for. Cowork sessions are stored on your local computer and aren't visible to the administrator.</li>
+    <li>Quick back-and-forth drafting. If you're going to review the output anyway, Chat is faster.</li>
+  </ul>
+
+  <div class="try-this">
+    <div class="label">Try This · 15 minutes · Cowork</div>
+    <h5>Your first Cowork task</h5>
+    <p style="margin-bottom:16px;">Create an empty folder on your desktop called <code>claude-practice</code>. Drop in any three or four non-sensitive church documents (old bulletins, past newsletters, a sample sermon outline). Open Cowork, click Work in a Folder, and choose that folder.</p>
+    <ul class="bullets">
+      <li><strong>Task:</strong> <em>"Read each of the documents in this folder. Produce a single-page Word document called <code>voice-notes.docx</code> that summarizes the tone, vocabulary patterns, and typical length of Court Street's written voice. I'll use it as a reference for the newsletter."</em></li>
+      <li>Watch it work. It will open each file, read it, take notes, and produce the doc.</li>
+      <li>When it's done, open <code>voice-notes.docx</code>. How useful is what it produced? What would you change about the prompt to get a better result next time?</li>
+    </ul>
+    <p>The official Cowork getting-started guide is at <a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" target="_blank" rel="noopener">support.claude.com</a> if you want to explore further.</p>
+  </div>
+
+  <h3 class="section-h">When to use Chat, Cowork, or the M365 connector</h3>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Task</th><th>Start with</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Drafting a sermon outline or study guide</td><td>Chat</td><td>You'll read and shape the draft anyway</td></tr>
+      <tr><td>Replying to an email</td><td>Chat (paste the thread)</td><td>Quick, and you review before sending</td></tr>
+      <tr><td>Summarizing a document already in SharePoint or OneDrive</td><td>Chat + M365 connector</td><td>Skip the download-and-upload step</td></tr>
+      <tr><td>Writing a pastoral letter</td><td>Chat</td><td>Voice &amp; warmth — you finish it by hand</td></tr>
+      <tr><td>Building a spreadsheet from scratch or reformatting one</td><td>Cowork</td><td>Produces a real Excel file with formulas</td></tr>
+      <tr><td>Reading and summarizing a long document you already have</td><td>Chat with file upload</td><td>Claude reads full books in one pass</td></tr>
+      <tr><td>Summarizing "what happened in the email thread about X"</td><td>Chat + M365 connector</td><td>Reads Outlook directly</td></tr>
+      <tr><td>Writing a newsletter</td><td>Chat</td><td>Voice quality matters; you'll review and edit</td></tr>
+      <tr><td>Reorganizing a folder of files, or batch-processing documents</td><td>Cowork</td><td>Actually does the work across many files</td></tr>
+      <tr><td>Producing a set of 10 finished thank-you letters as Word docs</td><td>Cowork</td><td>File output at scale, not back-and-forth</td></tr>
+      <tr><td>Donor thank-you (a single letter you'll personalize)</td><td>Chat</td><td>Voice &amp; review before mailing</td></tr>
+      <tr><td>Researching community partners (current web info)</td><td>Chat with web search on</td><td>Live web access, visible sources</td></tr>
+    </tbody>
+  </table>
+
+  <div class="checkpoint">
+    <h5>Before moving on</h5>
+    <ul>
+      <li>I've installed Claude Desktop on my work computer and signed in with my Court Street account.</li>
+      <li>I've connected Microsoft 365 (or I know the admin consent is still pending and I'll do it when that's ready).</li>
+      <li>I've had at least one real conversation in Chat, uploaded a file, and generated a downloadable artifact.</li>
+      <li>I've opened Cowork, pointed it at a practice folder, and let it produce at least one finished file.</li>
+      <li>I have a rough sense of which surface to reach for first, by task.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     ROLE TRACK INTRO
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="tracks-intro">
+  <div class="module-ribbon"><span class="dot"></span>Role Tracks <span class="time">Pick one · ~ 60-90 min</span></div>
+  <h2 class="module-title">Your <em>role</em> track</h2>
+  <p class="module-intro">The core modules gave you the shared foundation. Now we get specific. Pick the track that matches how you spend the largest part of your week. Each track gives you three to five use cases with actual prompts you can copy-paste, plus the judgment calls particular to your role.</p>
+
+  <p>If you wear multiple hats — and most of us do — <strong>start with the one you spend the most time in</strong> and skim the others. You can always come back. Better to actually apply one track than to survey all five.</p>
+
+  <div class="tracks-grid">
+    <a class="track-card pastoral" href="#track-a">
+      <div class="track-letter">A</div>
+      <h5>Pastoral &amp; Teaching</h5>
+      <p>Sermon prep, pastoral letters, study guides, counseling preparation</p>
+    </a>
+    <a class="track-card comms" href="#track-b">
+      <div class="track-letter">B</div>
+      <h5>Communications</h5>
+      <p>Newsletters, social media, bulletins, event promotion, voice consistency</p>
+    </a>
+    <a class="track-card youth" href="#track-c">
+      <div class="track-letter">C</div>
+      <h5>Children &amp; Youth</h5>
+      <p>Lesson plans, parent comms, volunteer training, age-appropriate discussion</p>
+    </a>
+    <a class="track-card admin" href="#track-d">
+      <div class="track-letter">D</div>
+      <h5>Administration</h5>
+      <p>Meeting notes, policies, board reports, budgets, operations</p>
+    </a>
+    <a class="track-card steward" href="#track-e">
+      <div class="track-letter">E</div>
+      <h5>Stewardship &amp; Outreach</h5>
+      <p>Donor letters, capital campaigns, grant research, community engagement</p>
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRACK A · PASTORAL & TEACHING
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="track-a">
+  <div class="module-ribbon"><span class="dot"></span>Track A <span class="time">~ 75 minutes</span></div>
+  <h2 class="module-title">Pastoral <em>&amp;</em> Teaching</h2>
+  <p class="module-intro">Preaching, teaching, and pastoral care are the most voice-sensitive work the church does. AI can be a real help here — but only if you hold it at the right distance. This track focuses on the uses that genuinely free you to do more ministry, and names the lines we don't cross.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">The governing principle</span>
+    <p style="margin:0;">AI is a research assistant and a first-draft partner — never a ghostwriter for what you're going to say from the pulpit or in a pastoral moment. The pastor's voice stays the pastor's voice. Anything going out under your name should be recognizably <em>you</em> to someone who knows you.</p>
+  </div>
+
+  <!-- USE CASE 1 -->
+  <h3 class="section-h">Use case 1 · Sermon research</h3>
+  <p>Where AI shines is in the preparation stage — gathering background, identifying commentators' positions, surfacing cross-references, suggesting angles you hadn't considered. Think of it as a well-read research assistant at your side, not as a writer.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Sermon research · Background &amp; angles</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I'm preparing a sermon on Luke 15:11-32 — the prodigal son — for Sunday, April 27. Our congregation is Court Street Christian Church in Salem, Oregon — mixed ages, mostly long-time members with some younger families. The sermon series we're in focuses on "Grace in Unlikely Places."
+
+Help me by providing:
+
+1. Three different interpretive angles scholars and preachers have taken on this passage beyond the most common "God the loving father" reading. Give me the less-traveled paths.
+
+2. The historical/cultural context a modern listener would miss — what did inheritance, feasting, and the father running mean in that era?
+
+3. Five potential cross-references that would deepen the text without overwhelming it.
+
+4. Three questions the passage might press on a comfortable suburban congregation that we shouldn't flinch from.
+
+Don't write the sermon. Just give me material to work from.</div>
+    <div class="prompt-note">Notice the final instruction. This prevents Claude from drafting a sermon. You stay the author; Claude stays the assistant.</div>
+  </div>
+
+  <!-- USE CASE 2 -->
+  <h3 class="section-h">Use case 2 · Small group study guides</h3>
+  <p>Converting a sermon into a small group discussion guide used to take a whole Saturday. It can now take twenty minutes, and the guide is often better for it — because you have the bandwidth to actually review and tailor it.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Sermon → study guide</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I preached the attached sermon on Sunday (full manuscript attached). Turn it into a 45-minute small group discussion guide with these sections:
+
+• OPENING (5 min): A warm-up question tied to the sermon's theme that everyone can answer in one sentence.
+
+• SCRIPTURE (10 min): The main passage read together, plus 2 observation questions ("what do you notice?") before any interpretation.
+
+• DISCUSSION (20 min): 4 discussion questions that move from the text → to meaning → to personal application. Use open-ended questions, not yes/no.
+
+• APPLICATION (5 min): One practical "this week, try..." invitation.
+
+• PRAYER (5 min): A brief prayer prompt connected to the theme.
+
+Keep the voice warm and accessible. Our groups are mixed in biblical knowledge — don't assume seminary vocabulary. Don't invent scripture references I didn't use.</div>
+  </div>
+
+  <!-- USE CASE 3 -->
+  <h3 class="section-h">Use case 3 · Pastoral letters</h3>
+  <p>For the many routine pastoral communications — membership welcome, new-baby congratulations, get-well notes, membership transfer letters — AI drafts a strong starting point, and you personalize. For the weightier letters — bereavement, crisis, conflict — handle differently (see below).</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Pastoral letter · New member welcome</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft a personal welcome letter from me (the senior pastor) to a new member at Court Street Christian Church.
+
+The letter should:
+
+• Be warm and specific, not generic
+• Be short — 4 short paragraphs max
+• Acknowledge that joining a church is a significant step
+• Name two or three ways they can connect at Court Street (a weekly small group, the hospitality team, Sunday hospitality hour)
+• Offer a concrete invitation — a coffee meeting in the next month if they'd like
+• End with a specific prayer, not a generic one
+
+Write in a voice that is warm but not saccharine, scripture-informed but not preachy. Leave [NAME] and [SPECIFIC DETAIL THEY SHARED] as placeholders I'll fill in. Sign-off: "With joy, Pastor [Name]"</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">For bereavement and crisis letters</span>
+    <p style="margin:0;">Do not use AI to draft letters for deaths, serious illness, family crisis, or estrangement. These letters carry the pastor's presence into a moment when the recipient needs <em>you</em>, not a polished paragraph. If you want to brainstorm, use AI to think through <em>approach</em> (what themes, what to avoid) — but write the letter yourself.</p>
+  </div>
+
+  <!-- USE CASE 4 -->
+  <h3 class="section-h">Use case 4 · Counseling preparation</h3>
+  <p>Before a counseling appointment on a subject you haven't worked with recently — grief in adolescence, addiction recovery, infertility, faith deconstruction — AI can surface what good pastoral care in that area looks like: common pitfalls, helpful frameworks, questions that open rather than close.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">Name rules</span>
+    <p style="margin:0;">Never type the person's name or identifying details. Use "a person in their 40s experiencing X" or "a parent whose teenager is Y." Keep the prompt fully anonymized. The purpose is general preparation, not case-specific advice.</p>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Counseling prep · Background reading</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I'm meeting with a parent whose adult child is going through a faith deconstruction — walking away from the Christian faith they were raised in. The parent is heartbroken and looking for pastoral support.
+
+Before the conversation, help me think through:
+
+1. What does sensitive, non-anxious pastoral care look like for this parent? What are the traps to avoid?
+
+2. What is generally unhelpful to say to a parent in this moment? (I want to know what NOT to do.)
+
+3. What good questions might I ask that help the parent feel heard, rather than lectured or fixed?
+
+4. Are there any scripture passages or pastoral frameworks that have been genuinely helpful for people in this exact situation — not prooftexts, but deep ones?
+
+I'm not looking for a script. I'm looking for a better posture walking in.</div>
+  </div>
+
+  <!-- USE CASE 5 -->
+  <h3 class="section-h">Use case 5 · Reading a long document fast</h3>
+  <p>Board packets. Annual reports. Denominational policy documents. Theology books. Claude can read a 60-page document in seconds and let you ask questions about it — with citations back to the page.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Document Q&amp;A</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">[Attach the long PDF: board packet, report, book chapter, policy document]
+
+Summarize this document in 5 bullets, then answer:
+
+1. What are the three most important decisions or questions it raises?
+2. Are there any sections where the author's reasoning feels weak or assumes something that isn't argued for?
+3. What would a critical reader push back on?
+
+Cite page numbers for anything you quote.</div>
+  </div>
+
+  <div class="try-this">
+    <div class="label">Try This · 30 minutes · Your sermon</div>
+    <h5>Apply it to this Sunday</h5>
+    <p>Pick the passage you're preaching on this Sunday. Use the sermon research prompt above to gather angles and context. Notice what you learn that you didn't have before. Now write your sermon — by hand, by yourself, in your voice. Then, after you're done, turn it into a small group guide using the second prompt. Observe how long each piece took.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Track A complete when</h5>
+    <ul>
+      <li>I've used Claude to gather sermon research for an actual upcoming sermon.</li>
+      <li>I've generated at least one small group study guide from sermon content.</li>
+      <li>I've drafted one routine pastoral letter using Claude and personalized it.</li>
+      <li>I understand which letters I still handwrite from scratch, and why.</li>
+      <li>I've tried uploading a long document and asking questions about it.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRACK B · COMMUNICATIONS
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="track-b">
+  <div class="module-ribbon"><span class="dot"></span>Track B <span class="time">~ 75 minutes</span></div>
+  <h2 class="module-title">Communications <em>&amp;</em> Marketing</h2>
+  <p class="module-intro">The communications role at a church is a firehose: newsletters, social posts, bulletins, email campaigns, event promotion, announcement scripts, website copy, volunteer appeals. This is the role where AI gives the most time back to the most people — if voice consistency is held.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">The governing principle</span>
+    <p style="margin:0;">Court Street's communications voice is warm, grounded, and slightly understated — we don't oversell, we don't use hype, we don't "journey together." Every piece of AI-drafted comm gets reviewed against that voice. The prompts below include voice guardrails so you don't have to re-litigate this every time.</p>
+  </div>
+
+  <!-- USE CASE 1 -->
+  <h3 class="section-h">Use case 1 · Weekly newsletter</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Midweek newsletter · Standing template</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">You are drafting the midweek email newsletter for Court Street Christian Church in Salem, Oregon — a warm, scripture-grounded congregation. Our tagline: "Loving God. Loving Neighbor. Together."
+
+Voice rules (match these, don't drift):
+• Warm but understated. No hype, no "journey," no "family." We're a church, not a brand.
+• Second person. Talk to a real member.
+• 200–250 words, broken into 4–5 short paragraphs.
+• Scripture references used sparingly and always accurate.
+• End with "See you Sunday,"
+
+This week's items:
+[PASTE 3–5 BULLETS: sermon theme, 2–3 upcoming events, one invitation or volunteer need]
+
+Draft the newsletter.</div>
+    <div class="prompt-note">Save this prompt. Use it every week. Just swap the bullet list. You'll have next Wednesday's newsletter drafted in thirty seconds.</div>
+  </div>
+
+  <!-- USE CASE 2 -->
+  <h3 class="section-h">Use case 2 · Social media from sermon content</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Social posts from a sermon</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I'm attaching Sunday's sermon manuscript [or paste the text]. Create social media content for Court Street Christian Church, drawing from the sermon:
+
+• 3 short Facebook posts (80–100 words each) — conversational, Court Street voice (warm, understated, no hype)
+• 3 Instagram captions (60 words each) with suggested image vibe for each
+• 2 quote cards (one sentence from the sermon, punchy, image-ready)
+
+Voice: we don't use hashtag pileups, don't use exclamation points, don't use "💯" or church emojis. One gentle emoji max per post, only when it fits.
+
+Don't invent quotes the pastor didn't say. If the sermon doesn't yield enough content, tell me.</div>
+  </div>
+
+  <!-- USE CASE 3 -->
+  <h3 class="section-h">Use case 3 · Event bulletins and flyers</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Bulletin copy · Event</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Write the bulletin copy for our upcoming [EVENT NAME] at Court Street. Details:
+
+• Date/time: [fill in]
+• Location: [fill in]
+• Who it's for: [all members / families / youth / etc.]
+• What will happen: [brief description]
+• How to RSVP / sign up: [details]
+• Cost (if any): [fill in]
+
+Produce two versions:
+1. A short-and-punchy version (under 60 words) for a bulletin insert
+2. A longer version (120 words) for the website event page
+
+Tone: warm, inviting, Court Street voice (no hype, no "journey," not saccharine). Include a one-line scripture if it fits naturally — don't force it.</div>
+    <div class="prompt-note">For the actual visual design of the bulletin/flyer, hand the copy to a human designer or use Canva. AI does copy; humans do layout.</div>
+  </div>
+
+  <!-- USE CASE 4 -->
+  <h3 class="section-h">Use case 4 · Email campaigns and announcements</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Congregation-wide announcement email</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">Draft a congregation-wide email from Pastor [Name] announcing [the news]. Audience: our full member list (~400 people, varied ages). Tone: honest, warm, clear.
+
+Include: (1) what's happening, (2) why, (3) what members can expect, (4) how to ask questions. Avoid corporate language. About 300 words.
+
+When you're done, I'll paste it into Outlook and send.</div>
+    <div class="prompt-note">If similar announcements have gone out before, ask Claude to "first search our Outlook for past congregation-wide announcements and match the structure." The M365 connector will pull those in automatically.</div>
+  </div>
+
+  <!-- USE CASE 5 -->
+  <h3 class="section-h">Use case 5 · Building a "voice" project</h3>
+  <p>This is the single biggest upgrade for a comms role. Create a Claude Project called "Court Street Communications" and upload, once:</p>
+  <ul class="bullets">
+    <li>The past 10 newsletters you've written that you liked</li>
+    <li>Your style guide (or a one-pager describing Court Street voice — if it doesn't exist, write one)</li>
+    <li>The church website's About and Mission pages</li>
+    <li>3–5 sample social posts that capture the voice</li>
+  </ul>
+  <p>From then on, every communication you draft inside that Project automatically carries Court Street voice. You write "draft a bulletin about the spring picnic" and it already knows the voice without you having to re-specify every time. This is the multiplier. Full instructions for setting up a Project are in Module 5.</p>
+
+  <div class="try-this">
+    <div class="label">Try This · 30 minutes</div>
+    <h5>Run a week's comms through the prompts</h5>
+    <p>Take this week's actual comms tasks — the newsletter, any event you're promoting, three social posts. Run them through the prompts above. Edit as needed. Time yourself. Compare to what the same work normally takes. Bring that number to the next staff meeting.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Track B complete when</h5>
+    <ul>
+      <li>I've drafted a full newsletter using the template prompt.</li>
+      <li>I've generated social media content from a sermon.</li>
+      <li>I've written event bulletin copy with Claude.</li>
+      <li>I have the Communications Project set up with style references (covered in Module 5).</li>
+      <li>I know which comms tasks still need full human drafting and which are AI-first.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRACK C · CHILDREN & YOUTH
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="track-c">
+  <div class="module-ribbon"><span class="dot"></span>Track C <span class="time">~ 75 minutes</span></div>
+  <h2 class="module-title">Children <em>&amp;</em> Youth Ministry</h2>
+  <p class="module-intro">Children's and youth ministry runs on a thousand small pieces: weekly lesson plans, discussion questions, parent communications, volunteer training, permission slips, event sheets. AI can take much of the preparation load off so you spend more time actually with kids and families.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">Child-safety first</span>
+    <p style="margin:0;">Never paste a child's full name, photo, or identifying details into AI. Never. Use generic references ("a third-grader," "a middle school girl"). For any communication that goes to parents, the pastoral review is always by a staff member who knows the family. AI drafts; humans send.</p>
+  </div>
+
+  <!-- USE CASE 1 -->
+  <h3 class="section-h">Use case 1 · Age-appropriate lesson plans</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Lesson plan · Age-specific</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Create a 45-minute Sunday school lesson plan for [AGE GROUP: K–2 / 3–5 / middle school / high school] on [SCRIPTURE OR THEME].
+
+Structure:
+• WELCOME (5 min): Age-appropriate opener or game
+• BIBLE STORY (10 min): Tell the story in language suited to this age. For K–2, use simple words, lots of repetition, concrete images. For older, assume more.
+• ACTIVITY (15 min): A hands-on activity that reinforces the main point. Low-supply-cost. Specify supplies.
+• DISCUSSION (10 min): 3 questions appropriate to this age's cognitive level.
+• CLOSING (5 min): Prayer or reflection.
+
+Also include:
+• The ONE main take-home idea, in one sentence a kid could repeat.
+• One thing to tell parents so they can reinforce it at home.
+
+Stay theologically grounded. Don't invent details that aren't in the passage. Don't dumb down to the point of distortion — respect kids' intelligence.</div>
+  </div>
+
+  <!-- USE CASE 2 -->
+  <h3 class="section-h">Use case 2 · Parent communications</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Parent email · Weekly recap</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft a weekly email to parents of kids in our [AGE GROUP] ministry at Court Street. Include:
+
+• What we learned in class this Sunday (brief summary, 3 sentences)
+• The ONE take-home idea
+• A question parents can ask at the dinner table this week
+• An optional Bible verse or activity for at-home follow-up
+• Anything coming up in the next 2 weeks they need to know about
+
+Tone: warm, informed, respectful of parents' time and judgment. Under 250 words. Assume parents are busy and we're on their team, not adding to their load.
+
+Sign-off: "In partnership with you, [Director name]"</div>
+  </div>
+
+  <!-- USE CASE 3 -->
+  <h3 class="section-h">Use case 3 · Volunteer training materials</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Volunteer orientation guide</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Create a 2-page volunteer orientation guide for new volunteers in the Court Street Children's Ministry. Include:
+
+• Welcome and the "why" of volunteering with kids in our community (warm, specific, not generic)
+• Our child-safety policies in plain language: two-adult rule, check-in/check-out, who to go to for concerns, what to do if a child gets hurt
+• What a typical Sunday morning looks like for a volunteer (arrive when, pick up materials where, setup, teaching, dismissal)
+• What to do in common scenarios: a child cries, a child misbehaves, a parent is running late, a child discloses something concerning
+• Who to contact for questions, and about what (names can be placeholders I'll fill in)
+• A short closing about the joy and weight of this role
+
+Tone: warm, thorough, treats the volunteer as a trusted partner. Format as a printable guide with clear section headers.</div>
+  </div>
+
+  <!-- USE CASE 4 -->
+  <h3 class="section-h">Use case 4 · Youth group discussion prep</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Discussion questions · Youth</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I'm leading a youth group discussion (grades 9–12) this week on [TOPIC: e.g., doubt, friendship, identity, social media, anxiety]. 30–40 minutes of discussion time.
+
+Give me:
+
+• A short opening question (1–2 sentences) that every kid can answer without being vulnerable yet — a warm-up.
+• 5 discussion questions that progress from surface to deeper. The questions should treat teenagers as capable of real reflection, not be condescending, and not assume a specific religious answer up front. Open the conversation, don't close it.
+• A scripture passage (or two) that connect meaningfully to the topic — not as prooftexts, but as starting points for honest wrestling.
+• One way to close the discussion that doesn't force a "correct" takeaway but invites each kid to reflect.
+
+Tone: respect for teenagers. These are smart young people with real questions.</div>
+  </div>
+
+  <!-- USE CASE 5 -->
+  <h3 class="section-h">Use case 5 · A Cowork curriculum library</h3>
+  <p>If your curriculum is scattered across multiple PDFs, Word docs, and books, Cowork will change your life. Put everything — every piece of curriculum you have, plus a few commentaries and a trusted children's ministry book or two — into a single folder on your computer (or in OneDrive, synced locally). Then open Cowork, point it at that folder, and ask natural questions: <em>"What's the main point of the Week 3 lesson on forgiveness?" "Do I have any lessons on perseverance for grade 5?" "What age-specific discussion questions do we have for Joseph's story?"</em></p>
+  <p>Cowork reads directly from those files and cites which one it used. It only uses the material in that folder — not the broader internet — so the answers stay grounded in curriculum you already trust. This is one of the single best uses of AI in the whole church. As you build it up, Cowork becomes a searchable, cited memory of everything the children's ministry has accumulated.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">An even better setup</span>
+    <p style="margin:0;">Over time, ask Cowork to add a short <code>notes.md</code> file to each curriculum folder summarizing what's in it, the age group, the key passages, and how it's been received. Cowork can do this for you — "for each subfolder, read the files inside and add a short notes.md describing the contents." Future searches get faster because Cowork reads the notes first.</p>
+  </div>
+
+  <div class="try-this">
+    <div class="label">Try This · 30 minutes</div>
+    <h5>This Sunday's lesson, built in AI</h5>
+    <p>Take this Sunday's passage and use the lesson plan prompt above. Build a full K–2, 3–5, or youth lesson (pick the age group you're teaching). Review, edit, use the lesson this Sunday. After class, note what worked and what didn't, and refine the prompt for next week.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Track C complete when</h5>
+    <ul>
+      <li>I've built an actual Sunday lesson with Claude that I'll use this week.</li>
+      <li>I've drafted a parent email using the weekly recap prompt.</li>
+      <li>I have a volunteer orientation document I can hand to a new volunteer on day one.</li>
+      <li>I've set up a Cowork curriculum folder with at least a few lessons and tested it with real questions.</li>
+      <li>I have clear child-safety rules about what never goes into AI.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRACK D · ADMINISTRATION
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="track-d">
+  <div class="module-ribbon"><span class="dot"></span>Track D <span class="time">~ 75 minutes</span></div>
+  <h2 class="module-title">Administration <em>&amp;</em> Operations</h2>
+  <p class="module-intro">The administrative role holds a church's operating rhythm: meetings, minutes, policies, schedules, budgets, communications, compliance, reports. This track pulls together every surface you have available — Chat for drafting, Cowork for file-producing work, and the Microsoft 365 connector for anything that touches email, SharePoint, or Teams.</p>
+
+  <!-- USE CASE 1 -->
+  <h3 class="section-h">Use case 1 · Meeting minutes from Teams transcripts</h3>
+  <p>For recurring meetings held in Microsoft Teams (staff meetings, board meetings, committee meetings), turn on the Teams transcript and meeting summary. Teams will save the transcript to OneDrive after the meeting. You can then ask Claude to turn it into real minutes.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">How to enable Teams transcripts</span>
+    <p style="margin:0;">In a Teams meeting, click <strong>More actions &rarr; Start transcription</strong>. Everyone on the call sees a notice that the meeting is being transcribed — consent is explicit, as it should be for a church meeting. When the meeting ends, the transcript is saved in OneDrive (for personal meetings) or SharePoint (for channel meetings) and a short auto-summary shows up in the meeting's chat.</p>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Meeting minutes from transcript</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">I just held the [meeting name] meeting. The Teams transcript and auto-summary are in our SharePoint. Pull them up and rewrite them as formal meeting minutes suitable for the church board record:
+
+• Attendees (list from the transcript)
+• Agenda items
+• Key discussion for each item (2–3 sentences each)
+• Decisions made
+• Action items with owners and due dates
+• Items tabled for next meeting
+
+Use neutral, professional language. Don't include chit-chat or unrelated tangents. Don't embellish. When you're done, save the result as a Word document I can attach to the board packet.</div>
+    <div class="prompt-note">With the M365 connector on, Claude can read the transcript directly. If the connector isn't set up yet, download the transcript from Teams and upload it in Chat instead.</div>
+  </div>
+
+  <!-- USE CASE 2 -->
+  <h3 class="section-h">Use case 2 · Policy drafting and review</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Policy draft · First version</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">Draft a one-page policy for Court Street Christian Church on [TOPIC: e.g., facility rental, social media posting, volunteer background checks, reimbursement].
+
+Structure:
+
+• PURPOSE: 2–3 sentences on why this policy exists
+• SCOPE: Who it applies to
+• POLICY: The actual rules, in plain language, numbered
+• RESPONSIBILITIES: Who does what
+• EXCEPTIONS/APPEALS: How someone requests an exception
+• REVIEW: When this policy gets reviewed next
+
+Tone: clear, practical, not legalistic. Written for a normal church member to read, not a lawyer. Include any common edge cases I should think about in a "Questions to consider" section at the end before we finalize.
+
+Context: We're a mid-size Christian Church congregation in Salem, Oregon. Before drafting, search our SharePoint for any existing Court Street policies that touch related topics and match their structure and tone.</div>
+    <div class="prompt-note">Any policy draft goes to a pastor and the board for review before adoption — AI never produces the final version of a policy.</div>
+  </div>
+
+  <!-- USE CASE 3 -->
+  <h3 class="section-h">Use case 3 · Board reports</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Board report · Quarterly ministry summary</span><span class="tool-tag cowork">Cowork</span></div>
+    <div class="prompt-body">In this folder you'll find raw notes and data from each ministry area for Q[N]. Read them all, then produce a quarterly ministry report for the Court Street board.
+
+For each ministry area, produce:
+• A 3-sentence summary of what happened this quarter
+• Key metrics or notable events
+• One question or concern for the board to consider
+• What's ahead in the next quarter
+
+Then add an overall 1-paragraph executive summary for the top of the report.
+
+Tone: factual, not promotional. Board members want to know the truth, not marketing copy. Surface concerns, don't hide them.
+
+Save the final report as a Word document named "Board Report Q[N] YYYY.docx" in this folder.</div>
+    <div class="prompt-note">This is a classic Cowork task — many input files, one clean output file. Drop the ministry area notes in a single folder first, then point Cowork at it.</div>
+  </div>
+
+  <!-- USE CASE 4 -->
+  <h3 class="section-h">Use case 4 · Budget analysis</h3>
+  <p>For most budget questions, the fastest path is to upload the budget spreadsheet to Chat and ask directly. Claude reads Excel files natively and can answer questions about the numbers without you having to build formulas.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Budget questions · Excel upload in Chat</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">[Attach the budget spreadsheet]
+
+Read this budget spreadsheet and answer each of these, citing the specific row, column, or tab for each answer:
+
+• What was our total giving for Q1 this year vs. Q1 last year?
+• Which expense category grew the most year over year?
+• Flag any line items that are more than 20% over their budget this quarter.
+• Summarize weekly giving trends over the past 12 months in one paragraph.
+• Are there any unusual or outlier transactions I should double-check?
+
+I'll spot-check the numbers you return before using any of this in a report.</div>
+    <div class="prompt-note">If you want Claude to produce a new Excel file with computed analysis — a variance report, for example — do that in Cowork instead. Save the source file to a folder, point Cowork at it, and ask for the output file by name.</div>
+  </div>
+
+  <!-- USE CASE 5 -->
+  <h3 class="section-h">Use case 5 · Long document summaries</h3>
+  <p>Denominational policy updates, insurance renewal documents, building code guidelines, legal updates — all the long documents that arrive quarterly can be read, summarized, and queried in a few minutes rather than an afternoon.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Long-doc summary</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">[Attach the PDF, or ask Claude to find it in SharePoint/OneDrive]
+
+Read this document and produce:
+
+1. A 1-paragraph executive summary suitable for the pastor and board chair.
+2. 5 key takeaways.
+3. Any items that specifically require Court Street to take action, with deadlines if mentioned.
+4. 3 questions I should raise with the board at the next meeting.
+5. Any language that is genuinely unclear or ambiguous — flag it for legal or pastoral review.
+
+Cite page numbers.</div>
+  </div>
+
+  <div class="try-this">
+    <div class="label">Try This · 30 minutes</div>
+    <h5>Run this week's operations through AI</h5>
+    <p>Pick three tasks from your admin week: one Teams meeting to turn into minutes (use Chat + the transcript), one long document to summarize (use Chat), one board-packet-style report that needs multiple inputs consolidated (use Cowork). Log how long each took. You'll likely cut combined time by more than half.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Track D complete when</h5>
+    <ul>
+      <li>I've turned a real Teams meeting transcript into formal minutes using Chat.</li>
+      <li>I've drafted a policy or report using Chat.</li>
+      <li>I've uploaded a budget spreadsheet and asked questions about it.</li>
+      <li>I've used Cowork at least once to consolidate multiple files into a single output.</li>
+      <li>I've summarized a long document (&gt;20 pages) using Chat.</li>
+      <li>I understand which admin outputs still need full human review before going to the board.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRACK E · STEWARDSHIP & OUTREACH
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="track-e">
+  <div class="module-ribbon"><span class="dot"></span>Track E <span class="time">~ 75 minutes</span></div>
+  <h2 class="module-title">Stewardship <em>&amp;</em> Outreach</h2>
+  <p class="module-intro">Donor relations and outreach work live on one thing: authentic, personal connection that says "we see you, we know you, you matter here." AI helps tremendously with the drafting load — but the personalization and the authentic voice must remain yours. This track holds that line carefully.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">The governing principle</span>
+    <p style="margin:0;">Donor and community communication is where a generic, AI-generic voice does the most damage. People can feel it. Every stewardship letter and outreach message reviewed here gets read by a human before it goes out, and gets a personal touch — a handwritten line, a specific memory, a named referent — that AI can't produce on its own.</p>
+  </div>
+
+  <!-- USE CASE 1 -->
+  <h3 class="section-h">Use case 1 · Donor thank-you letters</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Donor thank-you · Structure</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft a thank-you letter from Court Street Christian Church for a donor who recently gave [approximate gift size: $500 / $5,000 / major gift].
+
+Structure (keep to one page):
+
+• Opening: warm, personal thanks by name [NAME as placeholder]
+• A specific acknowledgment of impact — connect the gift to something concrete the church is doing. [PLACEHOLDER for the ministry area or specific outcome I'll fill in]
+• A scripture or reflection (short, not preachy, fits the spirit of generosity)
+• An invitation to continued relationship, not a transactional "give again" ask
+• Closing: warm, specific, not corporate
+
+Voice: warm, grounded, Court Street voice. Avoid "partner" and "journey" and "investment" (we're not a business). Leave blanks I can personalize with my own handwritten line.
+
+Don't make up details about the donor. Leave those spots for me.</div>
+  </div>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">The handwritten line</span>
+    <p style="margin:0;">For any donor letter — especially at higher gift levels — add a handwritten line at the bottom that references something specific you know about the donor (their kids, their ministry involvement, a conversation you've had). Handwriting, personally from you, is the single most effective touch in donor communications. AI cannot do this. Leave room.</p>
+  </div>
+
+  <!-- USE CASE 2 -->
+  <h3 class="section-h">Use case 2 · Capital campaign / year-end appeal</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Year-end giving appeal</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft a year-end giving appeal letter from Pastor [Name] for Court Street Christian Church in Salem, Oregon. Going to our full membership (~400 people).
+
+The letter should:
+
+• Tell a short story (1 paragraph) from this year at Court Street that embodies what giving made possible — a specific ministry moment, not a list of metrics
+• Transition to the invitation — our year-end financial position and what finishing strong looks like
+• Name the opportunity ahead (next year's vision, in 1–2 sentences)
+• Make a clear, un-apologetic but non-manipulative ask
+• Offer specific ways to give (online, by check, etc.) — I'll fill those in
+• Close with a pastoral blessing
+
+Length: 1 page (roughly 450 words). Tone: warm, grounded, honest about money without being awkward about it. Not slick. Don't over-promise. Don't guilt.
+
+Avoid: "invest in the vision," "partner with us," "join the journey." Sound like a pastor writing to a congregation they love — because that's what you are.</div>
+  </div>
+
+  <!-- USE CASE 3 -->
+  <h3 class="section-h">Use case 3 · Grant research and proposals</h3>
+  <p>Claude's Candid integration (part of our Claude for Nonprofits license) lets you search a database of over 200,000 US grants for foundations that fund faith-based or community work matching Court Street's outreach. You can then use Claude to draft an initial proposal.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Grant search and summary</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Using the Candid connector: find foundations in Oregon or the Pacific Northwest that have funded in the past 3 years any of:
+
+• Faith-based community programs
+• Food insecurity and hunger relief
+• Youth mentoring
+• Mental health support or counseling
+• Homeless outreach
+
+For each foundation, give me:
+• Name and location
+• Typical grant size range
+• Application process and deadlines
+• Whether they've funded faith-based organizations explicitly
+• A 1-sentence note on fit for Court Street Christian Church in Salem
+
+Return the top 10 most promising matches, ordered by fit.</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Grant proposal · First draft</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft a grant proposal (2 pages) for [FOUNDATION NAME] requesting $[AMOUNT] to support Court Street Christian Church's [PROGRAM NAME].
+
+Follow the foundation's standard structure:
+• Executive summary
+• Organization background (I'll provide the 1-pager — attached)
+• Need statement (use the 2023 Salem community needs data — attached)
+• Program description
+• Goals and measurable outcomes
+• Budget summary
+• Why Court Street is well-positioned to do this
+
+Voice: factual, specific, confident without overpromising. Use numbers when I give them to you. Don't fabricate any statistics. Flag for me any section where you need data I haven't provided.</div>
+  </div>
+
+  <!-- USE CASE 4 -->
+  <h3 class="section-h">Use case 4 · Outreach and translation</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Outreach · Culturally adapted invitation</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Translate and culturally adapt this event invitation for our Spanish-speaking neighbors in the Highland neighborhood. The original:
+
+[PASTE ORIGINAL ENGLISH COPY]
+
+I don't just want a direct translation — I want cultural adaptation appropriate for a Latinx community, written in warm, family-oriented Spanish (not formal, not corporate). It should feel like an invitation from neighbor to neighbor, not a tract from a church.
+
+Give me the adapted Spanish version and flag any places where a cultural translation difference matters — where the English assumption wouldn't land the same way.
+
+Then also produce a short English-back-translation so I can see exactly what the Spanish now says, for review.</div>
+  </div>
+
+  <!-- USE CASE 5 -->
+  <h3 class="section-h">Use case 5 · Community needs research</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Community research</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">Research current community needs in Salem, Oregon (97301 and surrounding zip codes) that a church's outreach ministry might respond to. Use web search — I need recent local data, not general knowledge.
+
+Focus on:
+• Housing insecurity, homelessness
+• Food insecurity
+• Mental health access
+• Youth and family support services
+• Recent demographic shifts
+
+For each area, give me:
+• A brief summary of the need, with recent local data (cite sources with links)
+• Current organizations already working in this space in Salem (so we don't duplicate)
+• A potential niche or underserved angle Court Street might thoughtfully serve
+
+Be specific to Salem. Cite every factual claim with a source link.</div>
+    <div class="prompt-note">Make sure web search is enabled for this conversation (there's a toggle in the message box). Always open the sources Claude cites and verify key figures before quoting them in a grant application or board report.</div>
+  </div>
+
+  <div class="try-this">
+    <div class="label">Try This · 30 minutes</div>
+    <h5>Draft one real donor letter and one community research brief</h5>
+    <p>Use the donor thank-you prompt with an actual recent gift (use initials in your prompt, not names). Add your handwritten line at the end. Then use the community research prompt to draft a 1-page brief on a specific need Court Street might serve. Share the brief with your pastor.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Track E complete when</h5>
+    <ul>
+      <li>I've drafted a real donor thank-you using Claude and added my personal handwritten line.</li>
+      <li>I've generated a year-end appeal letter draft.</li>
+      <li>I've run at least one grant search using the Candid connector.</li>
+      <li>I've produced one translated and culturally adapted piece of outreach copy.</li>
+      <li>I've compiled a community research brief on a local need.</li>
+      <li>I know which stewardship communications still require handwritten personalization.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"><span class="ornament-mark">❦</span></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 5 · CLAUDE PROJECTS (Advanced)
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m10">
+  <div class="module-ribbon"><span class="dot"></span>Advanced Module 1 <span class="time">~ 45 minutes</span></div>
+  <h2 class="module-title">Claude <em>Projects</em> — building systems, not one-offs</h2>
+  <p class="module-intro">Everything up to this point has been single-session work: you type a prompt, you get a reply, you move on. Claude Projects change the shape of that. A Project is a persistent shared workspace where context lives across conversations and across team members. This is the single biggest time-saver in the tool.</p>
+
+  <h3 class="section-h">What a Project is</h3>
+  <p>A Project is a named workspace in Claude that stores:</p>
+  <ul class="bullets">
+    <li><strong>Reference documents</strong> — uploads that the AI always has access to (your style guide, past sermons, doctrinal statement, policy documents, curriculum, brand book)</li>
+    <li><strong>Custom instructions</strong> — a system prompt that applies to every conversation in the Project ("you are assisting Court Street's children's ministry — voice rules: warm, age-appropriate, never invent scripture, always reference the attached curriculum")</li>
+    <li><strong>Team access</strong> — other staff members you've invited can use the same Project, with the same context</li>
+    <li><strong>Conversation history</strong> — every chat within the Project stays organized under that Project's name</li>
+  </ul>
+
+  <p>Once a Project is set up well, every conversation inside it automatically carries the voice, the policies, and the reference material of that ministry area. You no longer have to re-explain "we're a Christian Church in Salem, Oregon, voice is warm and understated..." at the start of every prompt. That's baked in.</p>
+
+  <h3 class="section-h">The Court Street Projects we'll build</h3>
+
+  <p>Five Projects, one for each ministry area. Each staff member has access to the ones relevant to their role.</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Project name</th><th>Owned by</th><th>Shared with</th><th>Key uploads</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Court Street — Pastoral</td><td>Pastor</td><td>Associate pastor</td><td>Doctrinal statement, past sermon archive, recommended commentary list</td></tr>
+      <tr><td>Court Street — Communications</td><td>Comms lead</td><td>Pastor, admin</td><td>Style guide, past 10 newsletters, brand one-pager, social voice samples</td></tr>
+      <tr><td>Court Street — Children &amp; Youth</td><td>Kids/Youth director</td><td>Lead teachers</td><td>Curriculum PDFs, child-safety policy, past lesson plans</td></tr>
+      <tr><td>Court Street — Administration</td><td>Administrator</td><td>Pastor, finance chair</td><td>Bylaws, employee handbook, past board minutes, policies</td></tr>
+      <tr><td>Court Street — Stewardship</td><td>Stewardship director</td><td>Pastor, admin</td><td>Past appeals, grant proposals, community needs data, donor segmentation doc</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-h">Step-by-step: creating your Project</h3>
+
+  <ol class="numbered">
+    <li><strong>In Claude, click "Projects" in the left sidebar, then "+ New Project."</strong> Name it following our convention: "Court Street — [Ministry Area]."</li>
+    <li><strong>Write the custom instructions.</strong> This is a paragraph at the top that defines the context for every conversation in the Project. Template below.</li>
+    <li><strong>Upload your reference documents.</strong> PDFs, Word docs, text files. Anything you'd normally re-explain. Avoid uploading anything from the Never list (counseling notes, identifiable giving records, etc.).</li>
+    <li><strong>Share with team members.</strong> Invite relevant staff by their @courtstreet.org email. They'll see the Project in their Claude sidebar.</li>
+    <li><strong>Use it.</strong> Every new conversation, start it inside the Project. You'll feel the difference immediately.</li>
+  </ol>
+
+  <h3 class="section-h">The custom instructions template</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Custom instructions · Template</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">You are assisting the [MINISTRY AREA] at Court Street Christian Church — a warm, scripture-grounded congregation in Salem, Oregon. Our tagline is "Loving God. Loving Neighbor. Together."
+
+Court Street voice rules (apply to everything you write):
+• Warm but understated — no hype, no "journey," no corporate "family" language.
+• Second person when writing to the congregation. Avoid "we invite you to partner with us in..." constructions.
+• Scripture used sparingly and always accurate — never invent references.
+• No emoji pileups. One gentle emoji max, only when it fits.
+• Treat the reader as a thoughtful adult, not a target audience.
+
+Attached reference documents are authoritative for this Project's context — [STYLE GUIDE / CURRICULUM / PAST SERMONS / ETC.]. Draw on them when relevant.
+
+Court Street AI Usage Policy: never generate content that treats specific members by name, never invent doctrinal positions not grounded in the attached docs, never produce content that would go out unreviewed.
+
+When I give you a task, always ask one clarifying question if something material is ambiguous, rather than guess.</div>
+    <div class="prompt-note">Customize per-Project: swap in the specific voice rules, uploads, and ministry area. Save once; it works for every conversation afterward.</div>
+  </div>
+
+  <h3 class="section-h">A library of reusable prompts within each Project</h3>
+
+  <p>Inside a Project, save the three to five prompts you run most often as "starter prompts." The comms Project might have saved starters for "weekly newsletter," "social from sermon," "event bulletin." The pastoral Project might have "sermon research," "small group guide," "routine pastoral letter."</p>
+
+  <p>Starter prompts go in a single shared document inside the Project (called something like <em>"Court Street Comms — Standard Prompts"</em>). Each staff member can pull the one they need, paste in the specifics of the week, and go. A new hire opens that doc and is productive on day one — no tribal knowledge required.</p>
+
+  <div class="try-this">
+    <div class="label">Try This · 45 minutes</div>
+    <h5>Build your first Project</h5>
+    <p>Set up the Project for your ministry area. Do all four steps:</p>
+    <ul class="bullets">
+      <li>Create the Project, named per convention</li>
+      <li>Adapt the custom instructions template for your area</li>
+      <li>Upload 3–5 reference documents</li>
+      <li>Invite one other staff member as a test</li>
+    </ul>
+    <p>Then run one of your normal tasks inside the Project. Notice how much context you don't have to re-explain. That gap is your time back.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Module 5 complete when</h5>
+    <ul>
+      <li>I've created a Project for my ministry area.</li>
+      <li>Custom instructions are written and saved.</li>
+      <li>At least 3 reference documents are uploaded.</li>
+      <li>At least one other staff member has been invited and confirmed access.</li>
+      <li>I've run a real task inside the Project and felt the difference.</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODULE 6 · PRACTICUM
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="m11">
+  <div class="module-ribbon"><span class="dot"></span>Advanced Module 2 <span class="time">~ 2 weeks</span></div>
+  <h2 class="module-title">Your <em>practicum</em> — one real task, start to finish</h2>
+  <p class="module-intro">The final module isn't a lesson. It's a practicum. Over the next two weeks, you'll pick one recurring task from your work, redesign it around AI, and present a short "time saved, quality changed" story at a staff meeting. This is where training becomes habit.</p>
+
+  <h3 class="section-h">Step 1 · Pick your task</h3>
+  <p>Choose a task that meets all three criteria:</p>
+  <ul class="bullets">
+    <li><strong>Recurring.</strong> Something you'll do at least monthly, ideally weekly. One-off tasks don't compound.</li>
+    <li><strong>Text-heavy.</strong> Something where writing, summarizing, analyzing, or drafting is the main work. Not something that's mostly phone calls or in-person.</li>
+    <li><strong>Currently a time drag.</strong> Something that consistently takes longer than you wish it did.</li>
+  </ul>
+
+  <p>Examples: the weekly newsletter. Sunday school lesson prep. Monthly board report. Meeting minutes. The ongoing grant proposal backlog. The stewardship thank-you list. The curriculum Q&amp;A volunteers keep asking about.</p>
+
+  <h3 class="section-h">Step 2 · Redesign the task around AI</h3>
+
+  <ol class="numbered">
+    <li><strong>Document the current workflow.</strong> Before you change anything, write down the current steps and roughly how long each takes. Be honest. You'll need this for the comparison.</li>
+    <li><strong>Design the AI-assisted version.</strong> Where does AI fit? What prompt(s) will you use? What still needs a human? What gets reviewed and by whom? Sketch the new workflow.</li>
+    <li><strong>Build any Project or prompt library you need.</strong> If this is the weekly newsletter, build the saved prompt in your Communications Project. If it's lesson prep, build a starter prompt template.</li>
+    <li><strong>Run the new workflow twice.</strong> Not once. Twice. First run will have friction. Second run will reveal whether it actually scales.</li>
+    <li><strong>Measure.</strong> Time, quality, review required. Be honest.</li>
+  </ol>
+
+  <h3 class="section-h">Step 3 · Present at staff meeting</h3>
+
+  <p>At the staff meeting after your practicum, take three to five minutes to share:</p>
+  <ul class="bullets">
+    <li><strong>The task</strong> you worked on</li>
+    <li><strong>The old workflow and time</strong> it took</li>
+    <li><strong>The new workflow and time</strong> it takes</li>
+    <li><strong>One thing you learned</strong> you didn't expect</li>
+    <li><strong>One thing that didn't work</strong> — what AI was bad at, or where quality suffered and you had to adjust</li>
+  </ul>
+
+  <p>Honest reports, including what didn't work, are more valuable than polished success stories. Other staff learn as much from watching you hit a wall as from watching you succeed.</p>
+
+  <div class="callout callout-pro">
+    <span class="callout-label">Why this step matters</span>
+    <p style="margin:0;">Every staff member's practicum becomes shared institutional knowledge. By the end of three months, Court Street has five to ten documented workflows that work, plus the lessons from what didn't. That's better than any vendor's training program. It's ours.</p>
+  </div>
+
+  <div class="checkpoint">
+    <h5>Practicum complete when</h5>
+    <ul>
+      <li>I've picked a real, recurring, text-heavy task from my week.</li>
+      <li>I've documented the old workflow and measured its current time.</li>
+      <li>I've designed and run the new workflow at least twice.</li>
+      <li>I've presented my story (including what didn't work) at staff meeting.</li>
+      <li>I've saved the new workflow's prompts and reference docs into my Project.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"><span class="ornament-mark">❦</span></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     APPENDIX · DISPATCH (MOBILE COWORK)
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="dispatch">
+  <div class="module-ribbon"><span class="dot"></span>Appendix A <span class="time">~ 10 minutes to read</span></div>
+  <h2 class="module-title">Appendix <em>A —</em> Dispatch</h2>
+  <p class="module-intro">A footnote for the curious. Dispatch is a new Cowork feature that lets you hand tasks to Claude from your phone while your desk computer does the work. It's useful, it's rough, and it's worth knowing about — but it's not required for any of the workflows in this curriculum.</p>
+
+  <h3 class="section-h">What Dispatch actually is</h3>
+
+  <p>Dispatch isn't a separate app. It's a feature inside Cowork that creates <em>one continuous conversation</em> that runs on both your Claude mobile app and your Claude Desktop app. You send Claude a message from your phone on the way to a hospital visit; Claude does the work back at your office computer; the finished file is waiting when you get back. You can send another message from your phone while you're there; Claude keeps going.</p>
+
+  <p>This is different from the regular mobile app, where Claude runs in the cloud and can't touch your files. With Dispatch, your desktop machine is the worker — same folders, same M365 connector, same Cowork skills. Your phone is just the remote control.</p>
+
+  <div class="callout callout-note">
+    <span class="callout-label">Availability</span>
+    <p style="margin:0;">Dispatch is currently a <em>research preview</em> for Claude Pro and Claude Max plan users. If the Court Street Claude account is on a plan that includes it, you'll see a <strong>Dispatch</strong> option in the Cowork sidebar. If you don't see it yet, the feature hasn't reached your tier — just wait; Anthropic has been rolling it out broadly.</p>
+  </div>
+
+  <h3 class="section-h">When a church staff member might want this</h3>
+
+  <p>Most Court Street work doesn't need Dispatch. Chat on the mobile app is already great for quick drafting on the go. But a few scenarios genuinely benefit:</p>
+
+  <ul class="bullets">
+    <li>You're driving back from a hospital visit and want to send a task that will pull a care-team update from SharePoint and draft a summary for the pastor &mdash; ready by the time you walk in.</li>
+    <li>You're at a community event and realize the board packet needs one more section. Dispatch it from your phone; it's done before you get to your desk.</li>
+    <li>A recurring Friday task (pulling metrics, generating a digest) where you'd rather kick it off while you're waking up, not after you've settled in.</li>
+  </ul>
+
+  <h3 class="section-h">Setting it up</h3>
+
+  <ol class="numbered">
+    <li><strong>Update both apps.</strong> Make sure Claude Desktop on your work computer and the Claude mobile app on your phone are both on the latest version. Download the mobile app from the App Store or Google Play if you haven't.</li>
+    <li><strong>Pair them.</strong> In Claude Desktop, click the <strong>Cowork</strong> tab, then find <strong>Dispatch</strong> in the sidebar. Click <em>Get started</em>. A QR code appears.</li>
+    <li><strong>Scan the code.</strong> Open the Claude mobile app and tap the Dispatch entry. Point your phone at the QR code on your desktop screen. That's it — no passwords, no extra setup.</li>
+    <li><strong>Turn on keep-awake.</strong> During setup you'll see a toggle that prevents your computer from going to sleep while Dispatch is running. Turn it on, or your tasks will stall the moment the lid closes.</li>
+  </ol>
+
+  <p>The official walkthrough, which Anthropic keeps updated, is at <a href="https://support.claude.com/en/articles/13947068-assign-tasks-to-claude-from-anywhere-in-cowork" target="_blank" rel="noopener">support.claude.com · Assign tasks to Claude from anywhere in Cowork</a>.</p>
+
+  <h3 class="section-h">What to know before you rely on it</h3>
+
+  <ul class="bullets">
+    <li><strong>Your work computer must stay awake and signed in</strong> with Claude Desktop open. If the computer sleeps, the task pauses.</li>
+    <li><strong>One continuous thread.</strong> You can't start a new Dispatch conversation — everything is one long, running chat. Claude remembers prior tasks in the same thread, which is often helpful and occasionally a problem.</li>
+    <li><strong>No task-complete notifications yet.</strong> Claude doesn't ping you when the work is done. You have to check back.</li>
+    <li><strong>It's still rough.</strong> Expect maybe half of tasks to complete cleanly on the first try, especially anything involving screen interactions. It will improve.</li>
+    <li><strong>All the church policy still applies.</strong> The Never list is the Never list, whether the prompt came from your phone or your desktop. Dispatch sessions are stored locally on your work computer just like regular Cowork, so the same audit-log caveat from Module 2 applies &mdash; pastoral, financial, and child-safety content doesn't get dispatched.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">A specific security note</span>
+    <p style="margin:0;">Dispatch gives your phone the ability to trigger real actions on your office computer &mdash; reading files, using the Microsoft 365 connector, clicking through apps. If your phone is ever lost or unattended at a meeting, someone with it could send tasks that run on your desk machine. Use a phone lock screen. If you lose the device, unpair it immediately from Claude Desktop's Dispatch settings.</p>
+  </div>
+
+  <p>That's the footnote. If Dispatch sounds useful for your rhythm, set it up; if it sounds like more friction than it's worth, skip it. The course works either way.</p>
+
+  <div class="ornament"><span class="ornament-mark">❦</span></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     APPENDIX B · SCHEDULED TASKS
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="scheduled">
+  <div class="module-ribbon"><span class="dot"></span>Appendix B <span class="time">~ 15 minutes to read</span></div>
+  <h2 class="module-title">Appendix <em>B —</em> Scheduled Tasks</h2>
+  <p class="module-intro">A second footnote, and the more useful of the two for most church staff. Scheduled Tasks let you write a prompt once and have Cowork run it automatically — every morning, every Monday, every hour — so work that used to need a calendar reminder just happens.</p>
+
+  <h3 class="section-h">What a scheduled task actually is</h3>
+
+  <p>A scheduled task is a Cowork prompt that Claude runs on its own at a cadence you pick — hourly, daily, weekdays, weekly, or manually on demand. Each run opens a fresh Cowork session, does the work, and drops the output wherever you told it to. You don't have to open the task, type the prompt, or remember it's Friday.</p>
+
+  <p>The practical picture: on Monday morning you open Claude Desktop and the week's prayer list, inbox digest, and giving summary are all already waiting — Cowork ran them at 6am. You review, edit, and move on to actual ministry.</p>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">The one hard requirement</span>
+    <p style="margin:0;">Scheduled tasks only run when <strong>your work computer is awake and Claude Desktop is open</strong>. If your computer is asleep or the app is closed when a task is scheduled to fire, Cowork skips it — and runs it automatically once the machine wakes back up. Practically, that means scheduled tasks work best for people whose office computer stays on during work hours. If yours sleeps at 5pm on Friday, don't schedule a 6am Monday task and expect it to fire on time; it will run when you arrive Monday morning.</p>
+  </div>
+
+  <h3 class="section-h">How to create one</h3>
+
+  <p>There are two ways. Either works.</p>
+
+  <h4 class="section-sub">Method 1 — the /schedule shortcut</h4>
+  <ol class="numbered">
+    <li>Open Cowork and start a new task (or continue an existing one you like).</li>
+    <li>Write out the prompt you want Claude to run. Test it once live, so you know it produces the kind of output you want.</li>
+    <li>Type <code>/schedule</code> in the chat input and send.</li>
+    <li>Claude asks a few follow-up questions with multiple-choice answers — what cadence, what to call the task, when to start. Answer them.</li>
+    <li>Click <strong>Schedule</strong> to confirm. The task now appears in the <strong>Scheduled</strong> section of the left sidebar.</li>
+  </ol>
+
+  <h4 class="section-sub">Method 2 — build from scratch</h4>
+  <ol class="numbered">
+    <li>In Cowork, click <strong>Scheduled</strong> in the left sidebar.</li>
+    <li>Click <strong>New task</strong> in the upper right.</li>
+    <li>Fill in the form: task name, prompt, cadence (hourly / daily / weekdays / weekly / manual), model, working folder.</li>
+    <li>Click <strong>Save</strong>.</li>
+  </ol>
+
+  <p>Use Method 1 when you want Claude to help shape the prompt. Use Method 2 when you already have a polished prompt and just want to schedule it. Once scheduled, all tasks live in that same <strong>Scheduled</strong> sidebar where you can pause, edit the cadence, run-on-demand, or delete. The official guide is at <a href="https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork" target="_blank" rel="noopener">support.claude.com &middot; Schedule recurring tasks in Claude Cowork</a>.</p>
+
+  <h3 class="section-h">Court Street–specific scheduled tasks worth trying</h3>
+
+  <p>Five examples, written the way you'd actually set them up. Copy them, adjust the specifics to your role, and schedule them this week if they fit. Every one assumes the Microsoft 365 connector is already set up (Module 4).</p>
+
+  <h4 class="section-sub">1. Monday morning staff briefing</h4>
+  <p><strong>Who it's for:</strong> Administrator, Pastor. <strong>Cadence:</strong> Weekly, Monday 6:30am.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Weekly staff briefing</span><span class="tool-tag cowork">Scheduled · Weekly</span></div>
+    <div class="prompt-body">Every Monday morning, pull together a one-page briefing for the staff meeting.
+
+Using the M365 connector:
+• Scan my Outlook inbox for unread messages from the past 7 days that appear to need a staff-meeting discussion or decision. List the sender, subject, and one-sentence summary of what they need.
+• Search Outlook and Teams for any reply-requested items from Court Street members or outside partners still awaiting response, flagged by age.
+• Pull the events on the church calendar for the next 14 days.
+• Summarize any new documents added to our SharePoint staff site in the last 7 days.
+
+Format as a single Word document titled "Staff Briefing - [Monday's date].docx" and save it to my OneDrive in the "Staff Meetings" folder. Keep it under one page — if it's running long, cut the least important items.
+
+Do not include anything flagged pastoral, counseling, or crisis-related, regardless of where it appears.</div>
+    <div class="prompt-note">Note that last line. The Never list applies even when Claude is running autonomously. Build the guardrails into the scheduled prompt itself.</div>
+  </div>
+
+  <h4 class="section-sub">2. Daily inbox triage</h4>
+  <p><strong>Who it's for:</strong> Administrator, Pastor. <strong>Cadence:</strong> Weekdays, 7:00am.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Daily inbox triage</span><span class="tool-tag cowork">Scheduled · Weekdays</span></div>
+    <div class="prompt-body">Every weekday morning, scan my Outlook inbox for messages received since yesterday.
+
+Produce a short markdown file called "Inbox-[today's date].md" saved to my OneDrive "Morning Briefings" folder, with three sections:
+
+1. NEEDS MY REPLY TODAY — messages from Court Street members, partners, or vendors where the sender seems to be waiting on me. Sender, one-line summary, how urgent it feels.
+2. FYI WORTH SEEING — newsletters, updates, denomination or community news I should know about but doesn't need a reply.
+3. LIKELY JUNK — promotional or automated messages I can probably archive.
+
+Skip anything marked private or that reads as pastoral-counseling in nature. Don't archive, delete, or reply to anything — just produce the summary. I'll handle the actions myself.</div>
+  </div>
+
+  <h4 class="section-sub">3. Sunday sermon-prep warmup</h4>
+  <p><strong>Who it's for:</strong> Pastor. <strong>Cadence:</strong> Weekly, Tuesday 8:00am.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Sermon prep warmup</span><span class="tool-tag cowork">Scheduled · Weekly</span></div>
+    <div class="prompt-body">Every Tuesday morning, read this week's upcoming sermon passage from the file "current-passage.md" in my Sermon Prep folder. (I update that file each Monday evening with this Sunday's text.)
+
+Then produce a file called "prep-[date].md" in the same folder with:
+
+• Three less-common interpretive angles beyond the standard reading
+• Historical or cultural context a modern listener might miss
+• Five potential cross-references worth exploring
+• Three questions this passage presses on a comfortable suburban congregation
+• Two sermon illustrations from recent news, history, or literature that would land with a mixed-age congregation
+
+This is research only, not a draft. I'll write the sermon. Just get me started.</div>
+  </div>
+
+  <h4 class="section-sub">4. Friday weekly giving summary</h4>
+  <p><strong>Who it's for:</strong> Administrator, Stewardship director. <strong>Cadence:</strong> Weekly, Friday 4:00pm.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Friday giving summary</span><span class="tool-tag cowork">Scheduled · Weekly</span></div>
+    <div class="prompt-body">Every Friday afternoon, open the file "giving-running-totals.xlsx" in the Finance folder of OneDrive. (The bookkeeper updates this every Thursday night.)
+
+Produce a short summary as a Word document, "Giving Summary - week ending [Friday's date].docx" in the same folder:
+
+• Total giving for the week
+• Year-to-date giving vs. year-to-date budget
+• Any unusual patterns worth flagging (large one-time gifts, drop in recurring givers, etc.) — described in aggregate only, no individual names
+• One-paragraph plain-English note suitable for a finance committee chair
+
+Important: Do not include any individual donor names, amounts, or identifying information in the output. Aggregate only.</div>
+    <div class="prompt-note">Named donor data stays off the Never list by design. The prompt enforces that explicitly so the scheduled run stays within policy.</div>
+  </div>
+
+  <h4 class="section-sub">5. Sunday-night prayer list compile</h4>
+  <p><strong>Who it's for:</strong> Pastor, Administrator. <strong>Cadence:</strong> Weekly, Sunday 7:00pm.</p>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Prayer list compile</span><span class="tool-tag cowork">Scheduled · Weekly</span></div>
+    <div class="prompt-body">Every Sunday evening, read the file "prayer-requests-incoming.md" in the Pastoral folder. (Staff adds entries to this file throughout the week.)
+
+Produce a clean, anonymized prayer list as a printable PDF called "Prayer List - week of [next Monday's date].pdf" for Monday morning's staff prayer time.
+
+Rules:
+• Use first names only if explicitly marked as OK to share. Otherwise use initials or generic references ("a member facing surgery," "a family in transition").
+• Group by category: health, bereavement, family, vocational, community, thanksgiving.
+• One line per request. No detail beyond what's needed for prayer.
+• If anything reads as high-sensitivity (active crisis, legal situation, child-safety issue), skip it entirely — I'll handle those personally.
+
+Save the PDF to the same folder so I can print it before staff meeting.</div>
+    <div class="prompt-note">The last bullet is the single most important line in this whole prompt. A scheduled task is working unsupervised. The pastoral guardrails have to live inside the prompt itself.</div>
+  </div>
+
+  <h3 class="section-h">Rules of thumb for scheduled tasks</h3>
+
+  <ul class="bullets">
+    <li><strong>Test the prompt live once first.</strong> Run it as a regular Cowork task and review the output. If it's good, <em>then</em> schedule it. Scheduling a prompt you haven't tested is scheduling a bad output on repeat.</li>
+    <li><strong>Write the guardrails into the prompt.</strong> "Skip anything pastoral." "No individual donor names." "Aggregate only." Claude is working alone — you're not there to catch it drifting.</li>
+    <li><strong>Scope to input files that get updated on a known cadence.</strong> If the prompt depends on a file that's supposed to be refreshed every Monday but didn't get refreshed this week, Claude should notice and say so rather than making something up.</li>
+    <li><strong>Name output files with the date.</strong> <code>Briefing-2026-04-20.docx</code> rather than <code>Briefing.docx</code>. Otherwise the next run overwrites the previous.</li>
+    <li><strong>Review results weekly at first.</strong> Just because it ran doesn't mean it ran well. Look at each run's output for the first month — you'll catch subtle prompt issues faster than you'd think.</li>
+    <li><strong>Scheduled tasks consume more usage than chatting.</strong> Each run is a fresh Cowork session with file access and multiple steps. Five scheduled daily tasks is not free — if the church account approaches usage limits, scheduled tasks are the first place to audit.</li>
+  </ul>
+
+  <h3 class="section-h">What NOT to schedule at Court Street</h3>
+
+  <p>Some kinds of work should stay human-initiated even when they're technically recurring. Don't schedule:</p>
+
+  <ul class="bullets">
+    <li>Anything involving pastoral-crisis or counseling content, even indirectly.</li>
+    <li>Anything that sends a message outside the church — an email to a member, a post on social, a text. Keep <em>output</em> automatic; keep <em>outgoing</em> manual.</li>
+    <li>Anything that makes decisions with money (even just generating draft payment approvals). A human reviews and authorizes every financial action.</li>
+    <li>Anything a member would be surprised to learn was automated. The drafts can be AI; the care has to be visibly human.</li>
+  </ul>
+
+  <p>That's the second footnote. Paired with Dispatch, scheduled tasks are what turn Cowork from a tool you open when needed into a quiet ministry assistant that's already working when you arrive.</p>
+
+  <div class="ornament"><span class="ornament-mark">❦</span></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE · PROMPT LIBRARY
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="prompts">
+  <div class="module-ribbon"><span class="dot"></span>Reference <span class="time">Ongoing</span></div>
+  <h2 class="module-title">The <em>Court Street</em> Prompt Library</h2>
+  <p class="module-intro">A reference collection of prompts that have earned their place at Court Street. Copy, paste, fill in the blanks. Update this library as you find prompts that work even better. The library grows.</p>
+
+  <h3 class="section-h">Pastoral &amp; teaching prompts</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Weekly sermon research starter</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">I'm preparing a sermon on [PASSAGE] for [DATE]. Our congregation is Court Street Christian Church, Salem Oregon. The sermon series is "[SERIES NAME]."
+
+Give me:
+1. Three less-common interpretive angles beyond the standard reading.
+2. Historical/cultural context a modern listener would miss.
+3. Five potential cross-references.
+4. Three questions this passage presses on a comfortable suburban congregation.
+
+Don't write the sermon. Research only.</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Sermon → small group guide</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">[Attach sermon manuscript]
+
+Turn this sermon into a 45-minute small group discussion guide:
+• OPENING (5 min): warm-up question
+• SCRIPTURE (10 min): passage read, 2 observation questions
+• DISCUSSION (20 min): 4 open-ended questions from text → meaning → application
+• APPLICATION (5 min): one "try this week" invitation
+• PRAYER (5 min): prompt tied to the theme
+
+Warm voice, accessible. Mixed-knowledge group. Don't invent scripture I didn't use.</div>
+  </div>
+
+  <h3 class="section-h">Communications prompts</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Weekly newsletter</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Draft Court Street's midweek email newsletter. Voice: warm, understated, no hype. 200–250 words, short paragraphs. End with "See you Sunday,"
+
+This week: [3-5 BULLETS]</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Social posts from sermon</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">[Attach sermon]
+
+From this sermon, create:
+• 3 Facebook posts (80–100 words, conversational, Court Street voice)
+• 3 Instagram captions (60 words, with image vibe for each)
+• 2 quote cards
+
+No hashtag pileups, no exclamation-point excess, max one gentle emoji per post. Don't invent quotes.</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Event bulletin copy</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Bulletin copy for [EVENT]. Details: [DATE/TIME/LOCATION/RSVP]. Produce:
+1. Short version (&lt;60 words) for bulletin insert
+2. Longer version (120 words) for the website
+
+Court Street voice: warm, inviting, not saccharine, no hype.</div>
+  </div>
+
+  <h3 class="section-h">Children &amp; youth prompts</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Sunday school lesson plan</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">45-min lesson plan for [AGE GROUP: K–2 / 3–5 / middle / high school] on [PASSAGE/THEME].
+
+• WELCOME (5 min): age-appropriate opener
+• BIBLE STORY (10 min): in language suited to this age
+• ACTIVITY (15 min): hands-on, low-supply. Specify materials.
+• DISCUSSION (10 min): 3 age-appropriate questions
+• CLOSING (5 min): prayer/reflection
+
+Include: ONE take-home idea in a sentence, ONE thing for parents to reinforce at home.</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Parent weekly recap</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Weekly email to parents of kids in [AGE GROUP]:
+• What we learned Sunday (3 sentences)
+• The ONE take-home idea
+• A dinner-table question
+• Optional Bible verse or activity
+• What's coming in 2 weeks
+
+Under 250 words. Warm, respectful of parents' time.</div>
+  </div>
+
+  <h3 class="section-h">Administration prompts</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Meeting minutes cleanup</span><span class="tool-tag">Chat</span></div>
+    <div class="prompt-body">Rewrite these Teams meeting transcript/notes as formal board minutes: attendees, agenda items with 2–3 sentence discussion each, decisions, action items with owners and dates, items tabled.
+
+Neutral professional tone. No embellishment.
+
+[PASTE TRANSCRIPT — or ask Claude to pull it from SharePoint/OneDrive via the M365 connector]</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Long document summary</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">[Attach PDF]
+
+Produce:
+1. 1-paragraph executive summary
+2. 5 key takeaways
+3. Action items Court Street must take (with any deadlines)
+4. 3 questions to raise with the board
+5. Unclear language flagged for review
+
+Cite page numbers.</div>
+  </div>
+
+  <h3 class="section-h">Stewardship &amp; outreach prompts</h3>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Donor thank-you</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Thank-you letter from Court Street for a [GIFT SIZE] donor.
+
+• Warm personal opening — [NAME placeholder]
+• Specific impact — connect gift to [MINISTRY AREA placeholder]
+• Short scripture or reflection (not preachy)
+• Invitation to continued relationship (not "give again")
+• Close warmly, not corporately
+
+Avoid "partner," "journey," "investment." Leave space for my handwritten line.</div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-header"><span>Year-end appeal</span><span class="tool-tag">Claude</span></div>
+    <div class="prompt-body">Year-end giving appeal from Pastor [Name], ~450 words, 1 page.
+
+• Short story (1 para) embodying what giving made possible
+• Honest financial position
+• Next year's vision (1–2 sentences)
+• Clear, un-apologetic ask
+• Ways to give [to fill in]
+• Pastoral blessing close
+
+No "partner with us," no "journey." Pastor writing to a congregation.</div>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-label">Keep this library alive</span>
+    <p style="margin:0;">When a new prompt works well for you, add it here. When an old prompt stops serving, prune it. Consider a quarterly staff review where each role track reports which prompts have earned their place.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE · GLOSSARY
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="glossary">
+  <div class="module-ribbon"><span class="dot"></span>Reference</div>
+  <h2 class="module-title"><em>Glossary</em></h2>
+  <p class="module-intro">A short glossary of terms you'll hear. Nothing technical beyond what's actually useful at Court Street.</p>
+
+  <table class="compare-table">
+    <thead><tr><th style="width:25%;">Term</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>AI / LLM</td><td>Artificial intelligence. Specifically, "large language models" — systems trained on huge amounts of text that can generate human-like language in response to prompts.</td></tr>
+      <tr><td>Prompt</td><td>The thing you type to the AI. The quality of the prompt determines the quality of the output.</td></tr>
+      <tr><td>Context window</td><td>How much text the AI can consider at once. Claude can handle roughly 500 pages in one conversation — among the largest in the industry.</td></tr>
+      <tr><td>Hallucination</td><td>When AI generates something that sounds confident but is simply wrong — a made-up scripture reference, an invented quote, a false historical fact. Always verify.</td></tr>
+      <tr><td>Claude</td><td>Anthropic's AI assistant. Our chosen tool for Court Street's AI work.</td></tr>
+      <tr><td>Claude Desktop</td><td>The Claude app you install on your work computer (Windows or Mac). Includes both Chat and Cowork surfaces. Our standard — not the website.</td></tr>
+      <tr><td>Chat</td><td>The conversation surface inside Claude Desktop. You type, Claude answers, you review and use the result. Most church work happens here.</td></tr>
+      <tr><td>Cowork</td><td>The agent surface inside Claude Desktop. You point Claude at a folder on your computer, give it a task, and Claude works through it on its own, producing real files. Good for multi-step or file-producing work.</td></tr>
+      <tr><td>Project (Claude)</td><td>A persistent workspace in Chat with uploaded reference documents, custom instructions, and team access. Context lives across conversations.</td></tr>
+      <tr><td>Microsoft 365 Connector</td><td>A feature that lets Claude read — but not modify — your Outlook email, OneDrive files, SharePoint sites, and Teams conversations. Respects your existing M365 permissions.</td></tr>
+      <tr><td>Candid</td><td>A database of over 200,000 US grants and foundations. Useful for grant research.</td></tr>
+      <tr><td>Constitutional AI</td><td>Anthropic's approach to making Claude safer — embedding principles at training time so the model is less likely to produce harmful or inappropriate content. Relevant for pastoral work.</td></tr>
+      <tr><td>Artifact</td><td>A file Claude creates for you inside Chat (PDF, Word doc, HTML page). You can download it directly from the conversation.</td></tr>
+      <tr><td>Tokens</td><td>The units AI processes text in. Roughly 3/4 of a word each. You don't need to count them — it's just how the math works inside.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE · FAQ
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="faq">
+  <div class="module-ribbon"><span class="dot"></span>Reference</div>
+  <h2 class="module-title">Frequently <em>asked</em> questions</h2>
+
+  <h3 class="section-h">"Is using AI for sermon prep dishonest?"</h3>
+  <p>No more than using a commentary, a study Bible, or a sermon illustration book. Every preacher throughout history has drawn from research tools and other voices. What matters is that the sermon that finally gets preached is yours — your discernment, your voice, your care for the people in front of you. AI is a research assistant. The sermon is yours.</p>
+
+  <h3 class="section-h">"Will using AI make me a worse writer over time?"</h3>
+  <p>It can, if you use it as a crutch instead of a collaborator. But used intentionally — as a drafting partner you push back on, refine, and often override — it tends to sharpen your writing rather than dull it, because you're editing critically and getting exposure to more approaches. The rule of thumb: if you can't tell what you actually think until you see an AI draft, that's a warning. If an AI draft helps you find what you already think faster, that's a gift.</p>
+
+  <h3 class="section-h">"What if I'm bad at technology?"</h3>
+  <p>This training assumes no prior AI experience, only basic comfort with email and Word. Claude Desktop's interface is intentionally simple — it's just a chat window and a file-picker. If you hit real friction, talk to the administrator. Many staff members have been surprised at how little technical skill it actually requires once they've installed the app and signed in the first time.</p>
+
+  <h3 class="section-h">"Can the AI read our member database?"</h3>
+  <p>No, not automatically. Claude has no access to our membership system unless a staff member explicitly uploads or pastes data. Per our policy, named member data with sensitive details (giving amounts, pastoral notes, personal information) doesn't get pasted in at all. The Microsoft 365 connector can see documents, email, and Teams chats — but only the ones you already have permission to see yourself — and it never modifies anything.</p>
+
+  <h3 class="section-h">"What does Anthropic do with what I type?"</h3>
+  <p>On the licensed organization plan we're using, Anthropic does not use your conversations to train their AI models. Conversations are stored for your use and for operational purposes (reliability, debugging), but they are not used as training data. This is a key reason we chose an organization-tier plan over the free consumer version for church work. Cowork sessions, specifically, are stored locally on your own computer and aren't sent to Anthropic's servers in the same way Chat is.</p>
+
+  <h3 class="section-h">"What if AI generates something theologically wrong?"</h3>
+  <p>It will, sometimes. This is why every piece of content passes the pastoral and accuracy checks before going out. Treat AI output as a first draft by a seminary intern — often solid, occasionally off, always in need of a knowledgeable review. The more doctrinally sensitive the content, the closer the review.</p>
+
+  <h3 class="section-h">"Can our AI Usage Policy be updated?"</h3>
+  <p>Yes — annually, or sooner if a new risk or opportunity emerges. Updates go through the pastor and board, and staff are notified. The Never list and Always list are the most stable parts. The technology changes faster than the principles do.</p>
+
+  <h3 class="section-h">"What if a member asks whether we use AI?"</h3>
+  <p>Tell them the truth. "Yes — we use Claude as a drafting and research assistant for things like newsletters, study guides, and research. Every piece of communication is reviewed and personalized by a staff member before it goes out. We don't use AI for pastoral conversations, counseling, or anything involving sensitive member information." Most members are fine with this, and some are relieved to hear we're being thoughtful.</p>
+
+  <h3 class="section-h">"What if I realize I made a mistake — pasted something I shouldn't have?"</h3>
+  <p>Contact the administrator that day. We'll walk through what happened, take any cleanup steps available, and document it. Don't hide it. Open handling is the only way to stay safe.</p>
+
+  <h3 class="section-h">"Do I have to use AI?"</h3>
+  <p>No. If a staff member prefers not to use these tools for some of their work, that's a reasonable choice. The policy is opt-in: available to everyone, required of no one. That said, we'd encourage you to at least complete this training — even if you choose not to use AI day-to-day, it helps to understand what the tools can and can't do when others around you are using them.</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE · RESOURCES
+     ═══════════════════════════════════════════════════ -->
+<section class="module" id="resources">
+  <div class="module-ribbon"><span class="dot"></span>Reference</div>
+  <h2 class="module-title"><em>Further</em> resources</h2>
+  <p class="module-intro">Places to go when you want more depth than this curriculum can provide.</p>
+
+  <h4 class="section-sub">Installing Claude &amp; connecting Microsoft 365</h4>
+  <ul class="bullets">
+    <li><strong>Download Claude Desktop</strong> — <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a>. Windows, Mac, iOS, Android.</li>
+    <li><strong>Install guide</strong> — <a href="https://support.claude.com/en/articles/10065433-install-claude-desktop" target="_blank" rel="noopener">Installing Claude Desktop</a> on Anthropic's support site, with OS-specific steps.</li>
+    <li><strong>Microsoft 365 connector overview</strong> — <a href="https://claude.com/connectors/microsoft-365" target="_blank" rel="noopener">claude.com/connectors/microsoft-365</a>. What it does, what it sees.</li>
+    <li><strong>M365 connector setup walkthrough</strong> — <a href="https://support.claude.com/en/articles/12542951-enable-and-use-the-microsoft-365-connector" target="_blank" rel="noopener">Enable and use the Microsoft 365 connector</a>. The official step-by-step, including the admin consent process.</li>
+    <li><strong>M365 connector security guide</strong> — <a href="https://support.claude.com/en/articles/12684923-microsoft-365-connector-security-guide" target="_blank" rel="noopener">Security and privacy details</a>. Worth reading if you're asked about what Claude can and can't see.</li>
+  </ul>
+
+  <h4 class="section-sub">Learning Cowork</h4>
+  <ul class="bullets">
+    <li><strong>Cowork getting-started guide</strong> — <a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" target="_blank" rel="noopener">Get started with Claude Cowork</a>. The official walkthrough, including global instructions, folder instructions, plugins, and scheduled tasks.</li>
+  </ul>
+
+  <h4 class="section-sub">Free online courses</h4>
+  <ul class="bullets">
+    <li><strong>AI Fluency: Framework &amp; Foundations</strong> — <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener">anthropic.skilljar.com/ai-fluency-framework-foundations</a>. Anthropic's flagship course on thinking clearly with AI. About four hours, free, with a certificate.</li>
+    <li><strong>AI Fluency for Nonprofits</strong> — <a href="https://anthropic.skilljar.com/ai-fluency-for-nonprofits" target="_blank" rel="noopener">anthropic.skilljar.com/ai-fluency-for-nonprofits</a>. A version of the above tailored for mission-driven organizations with limited resources. Highly recommended for Court Street staff after completing this curriculum.</li>
+    <li><strong>Claude 101</strong> — <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener">anthropic.skilljar.com/claude-101</a>. Short, hands-on. A good refresher if Module 4 feels like a lot at first.</li>
+    <li><strong>Anthropic Academy catalog</strong> — <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener">anthropic.skilljar.com</a>. The full list of free courses, most with certificates.</li>
+  </ul>
+
+  <h4 class="section-sub">Documentation &amp; prompt engineering</h4>
+  <ul class="bullets">
+    <li><strong>Claude support center</strong> — <a href="https://support.claude.com" target="_blank" rel="noopener">support.claude.com</a>. Searchable help for every feature.</li>
+    <li><strong>Prompt engineering guide</strong> — <a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">docs.claude.com/prompt-engineering</a>. Goes deeper than the CRAFT framework in Module 3 if you want it.</li>
+  </ul>
+
+  <h4 class="section-sub">Books worth reading</h4>
+  <ul class="bullets">
+    <li><em>Co-Intelligence</em> by Ethan Mollick — thoughtful and practical guide to using AI as a collaborator. Short, readable, not technical.</li>
+    <li><em>The Alignment Problem</em> by Brian Christian — for the staff member who wants to understand the broader landscape of AI ethics. Dense but rewarding.</li>
+  </ul>
+
+  <h4 class="section-sub">Communities</h4>
+  <ul class="bullets">
+    <li><strong>The Barna Group's AI research</strong> — ongoing research on AI and churches, from a faith-informed lens.</li>
+    <li><strong>Church Tech Today</strong> — a newsletter and community specifically for church staff thinking about technology thoughtfully.</li>
+  </ul>
+
+  <h4 class="section-sub">Inside Court Street</h4>
+  <ul class="bullets">
+    <li><strong>The church administrator</strong> — for any policy, account, or "is this appropriate?" question.</li>
+    <li><strong>The quarterly AI review meeting</strong> — every staff member is welcome to bring questions, suggestions, and frustrations.</li>
+    <li><strong>This curriculum</strong> — living document. If something here isn't working for you, tell us so we can improve it.</li>
+  </ul>
+
+  <div class="callout callout-scripture">
+    "For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."
+    <cite>Ephesians 2:10</cite>
+  </div>
+
+  <p>The good work we're here to do hasn't changed. These tools, at their best, give us more room to do it.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="foot-title">Court Street Christian Church · AI for Ministry</div>
+  <p>Training curriculum for Court Street staff, prepared Spring 2026. Living document — revisions welcome. Contact the administrator with questions or suggestions.</p>
+  <p style="margin-top:14px;">1699 Court St. NE, Salem OR 97301 · 503-363-6161 · courtstreet.org</p>
+</footer>
+
+<script>
+  (function () {
+    'use strict';
+
+    var sidebar  = document.querySelector('aside.sidebar');
+    var toggle   = document.getElementById('menu-toggle');
+    var backdrop = document.getElementById('drawer-backdrop');
+    var scrollYBeforeLock = 0;
+
+    function lockBodyScroll() {
+      scrollYBeforeLock = window.scrollY;
+      document.documentElement.style.overflow = 'hidden';
+    }
+    function unlockBodyScroll() {
+      document.documentElement.style.overflow = '';
+      window.scrollTo(0, scrollYBeforeLock);
+    }
+
+    function openDrawer() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('visible');
+      toggle.setAttribute('aria-expanded', 'true');
+      lockBodyScroll();
+    }
+
+    function closeDrawer() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      unlockBodyScroll();
+      setTimeout(function () { backdrop.classList.remove('visible'); }, 320);
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      sidebar.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+
+    backdrop.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) closeDrawer();
+    });
+
+    document.querySelectorAll('.sb-nav a').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        closeDrawer();
+        setTimeout(function () {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      });
+    });
+
+    var sections = document.querySelectorAll('section.module, section.hero');
+    var navLinks = document.querySelectorAll('.sb-nav a');
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          navLinks.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(function (s) { spy.observe(s); });
+  }());
+</script>
+
+</body>
+</html>
