@@ -1126,7 +1126,8 @@
   }
   #password-gate input {
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    /* 16px minimum keeps iOS from auto-zooming when the input focuses. */
+    font-size: 16px;
     padding: 12px 14px;
     background: rgba(250,246,239,.06);
     border: 1px solid rgba(250,246,239,.18);
