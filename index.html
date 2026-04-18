@@ -914,6 +914,9 @@
     /* Top bar already shows the title — hide the duplicate header in the drawer */
     .sb-brand, .sb-title { display: none; }
 
+    /* Offset scrollIntoView targets so section tops aren't hidden behind the 58px fixed top bar. */
+    section.hero, section.module { scroll-margin-top: 70px; }
+
     /* Pad main content for fixed top bar */
     main {
       max-width: 100%;
