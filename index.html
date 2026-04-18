@@ -1009,9 +1009,17 @@
       padding: 10px 14px;
       font-size: 10px;
       letter-spacing: 0.08em;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
     }
+    /* Keep the header on a single line — truncate the label if it can't fit next to the tag + copy. */
+    .prompt-header > :first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .prompt-header .tool-tag,
+    .prompt-copy { flex-shrink: 0; }
     .prompt-header .tool-tag { font-size: 9.5px; padding: 3px 8px; }
     .prompt-body {
       padding: 18px 16px;
