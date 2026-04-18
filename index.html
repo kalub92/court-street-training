@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI for Ministry · A Court Street Training Curriculum</title>
+<script>
+  // Pre-paint check so returning visitors don't flash the gate.
+  try {
+    if (localStorage.getItem('cs-auth') === '1') {
+      document.documentElement.setAttribute('data-authed', '1');
+    }
+  } catch (_) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1052,9 +1060,159 @@
     .ornament { margin: 36px auto; }
   }
 
+  /* ──── PASSWORD GATE ──── */
+  html:not([data-authed="1"]) body { overflow: hidden; }
+  html[data-authed="1"] #password-gate { display: none; }
+  #password-gate {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--navy);
+    color: var(--cream);
+    padding: 24px;
+  }
+  #password-gate::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .6;
+  }
+  #password-gate .gate-card {
+    position: relative;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+  #password-gate .gate-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin-bottom: 14px;
+  }
+  #password-gate h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    color: var(--cream);
+  }
+  #password-gate h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  #password-gate .gate-sub {
+    font-size: 13.5px;
+    color: rgba(250,246,239,.7);
+    margin-bottom: 32px;
+  }
+  #password-gate form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #password-gate label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    text-align: left;
+  }
+  #password-gate input {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 12px 14px;
+    background: rgba(250,246,239,.06);
+    border: 1px solid rgba(250,246,239,.18);
+    border-radius: 4px;
+    color: var(--cream);
+    outline: none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  #password-gate input:focus {
+    border-color: var(--gold);
+    background: rgba(250,246,239,.09);
+  }
+  #password-gate button {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 12px 18px;
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  #password-gate button:hover { background: var(--gold-lt); }
+  #password-gate .gate-error {
+    min-height: 18px;
+    font-size: 12.5px;
+    color: var(--red-lt);
+    margin-top: 4px;
+  }
+
 </style>
 </head>
 <body>
+<!-- Password gate — lightweight client-side only, not real auth -->
+<div id="password-gate" aria-hidden="false">
+  <div class="gate-card">
+    <div class="gate-eyebrow">Court Street · Staff Training</div>
+    <h1>AI <em>for</em> Ministry</h1>
+    <p class="gate-sub">This training is for Court Street staff. Please enter the password to continue.</p>
+    <form id="password-form" autocomplete="on">
+      <label for="password-input">Password</label>
+      <input type="password" id="password-input" name="password" autocomplete="current-password" required autofocus>
+      <button type="submit">Enter</button>
+      <div class="gate-error" id="password-error" role="alert" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<script>
+  (function () {
+    'use strict';
+    // SHA-256 of the configured SITE_PASSWORD. Update when rotating the password.
+    var EXPECTED_HASH = '7988d49b596d663784df19f64118a2e02c995c8b23e78d2d8addfcfa327532b3';
+
+    var form = document.getElementById('password-form');
+    var input = document.getElementById('password-input');
+    var error = document.getElementById('password-error');
+    var gate = document.getElementById('password-gate');
+    if (!form) return;
+
+    async function sha256Hex(str) {
+      var buf = new TextEncoder().encode(str);
+      var digest = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(digest))
+        .map(function (b) { return b.toString(16).padStart(2, '0'); })
+        .join('');
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      error.textContent = '';
+      try {
+        var hex = await sha256Hex(input.value);
+        if (hex === EXPECTED_HASH) {
+          try { localStorage.setItem('cs-auth', '1'); } catch (_) {}
+          document.documentElement.setAttribute('data-authed', '1');
+          gate.setAttribute('aria-hidden', 'true');
+        } else {
+          error.textContent = 'Incorrect password.';
+          input.select();
+        }
+      } catch (_) {
+        error.textContent = 'Your browser blocked the password check. Try a different browser.';
+      }
+    });
+  }());
+</script>
+
 <!-- Mobile top bar — hidden on desktop via CSS -->
 <div class="mobile-topbar">
   <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
