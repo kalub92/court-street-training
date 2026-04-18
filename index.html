@@ -1061,7 +1061,11 @@
   }
 
   /* ──── PASSWORD GATE ──── */
-  html:not([data-authed="1"]) body { overflow: hidden; }
+  html:not([data-authed="1"]),
+  html:not([data-authed="1"]) body {
+    overflow: hidden;
+    height: 100%;
+  }
   html[data-authed="1"] #password-gate { display: none; }
   #password-gate {
     position: fixed; inset: 0; z-index: 1000;
@@ -1202,6 +1206,8 @@
           try { localStorage.setItem('cs-auth', '1'); } catch (_) {}
           document.documentElement.setAttribute('data-authed', '1');
           gate.setAttribute('aria-hidden', 'true');
+          input.blur();
+          window.scrollTo(0, 0);
         } else {
           error.textContent = 'Incorrect password.';
           input.select();
