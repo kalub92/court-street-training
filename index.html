@@ -104,6 +104,7 @@
     margin-bottom: 28px;
   }
   .sb-group-label {
+    display: block;
     font-size: 10.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -111,6 +112,12 @@
     font-weight: 600;
     margin-bottom: 10px;
     padding-left: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color .15s ease;
+  }
+  a.sb-group-label:hover {
+    color: var(--gold);
   }
   .sb-nav {
     list-style: none;
@@ -1071,7 +1078,7 @@
     <div class="sb-title">AI for Ministry<br>Training Curriculum</div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Begin Here</div>
+      <a href="#welcome" class="sb-group-label">Begin Here</a>
       <ul class="sb-nav">
         <li><a href="#welcome">Welcome</a></li>
         <li><a href="#how-to-use">How to Use This Course</a></li>
@@ -1079,7 +1086,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Core Modules · Everyone</div>
+      <a href="#m1" class="sb-group-label">Core Modules · Everyone</a>
       <ul class="sb-nav">
         <li><a href="#m1">1. Foundations</a></li>
         <li><a href="#m2">2. Our AI Policy</a></li>
@@ -1089,7 +1096,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Role Tracks · Pick Yours</div>
+      <a href="#tracks-intro" class="sb-group-label">Role Tracks · Pick Yours</a>
       <ul class="sb-nav">
         <li><a href="#track-a">Track A · Pastoral &amp; Teaching</a></li>
         <li><a href="#track-b">Track B · Communications</a></li>
@@ -1100,7 +1107,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Advanced</div>
+      <a href="#m10" class="sb-group-label">Advanced</a>
       <ul class="sb-nav">
         <li><a href="#m10">5. Claude Projects</a></li>
         <li><a href="#m11">6. Your Practicum</a></li>
@@ -1108,7 +1115,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Appendix</div>
+      <a href="#dispatch" class="sb-group-label">Appendix</a>
       <ul class="sb-nav">
         <li><a href="#dispatch">A &middot; Dispatch &middot; Mobile</a></li>
         <li><a href="#scheduled">B &middot; Scheduled Tasks</a></li>
@@ -1116,7 +1123,7 @@
     </div>
 
     <div class="sb-group">
-      <div class="sb-group-label">Reference</div>
+      <a href="#prompts" class="sb-group-label">Reference</a>
       <ul class="sb-nav">
         <li><a href="#prompts">Prompt Library</a></li>
         <li><a href="#glossary">Glossary</a></li>
@@ -3076,10 +3083,9 @@ No "partner with us," no "journey." Pastor writing to a congregation.</div>
       if (e.key === 'Escape' && sidebar.classList.contains('open')) closeDrawer();
     });
 
-    document.querySelectorAll('.sb-nav a').forEach(function (link) {
+    document.querySelectorAll('.sidebar-inner a[href^="#"]').forEach(function (link) {
       link.addEventListener('click', function (e) {
         var href = link.getAttribute('href');
-        if (!href || !href.startsWith('#')) return;
         var target = document.querySelector(href);
         if (!target) return;
         e.preventDefault();
