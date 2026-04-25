@@ -1245,6 +1245,10 @@
           gate.setAttribute('aria-hidden', 'true');
           input.blur();
           window.scrollTo(0, 0);
+          // Reset viewport so mobile renders at full zoom after gate is removed
+          if (window.visualViewport) {
+            window.visualViewport.scale = 1;
+          }
         } else {
           error.textContent = 'Incorrect password.';
           input.select();
